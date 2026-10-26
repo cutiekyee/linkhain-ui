@@ -1,6 +1,6 @@
 # Linkhain Campus Hub · Mobile UI Redesign Specification
 
-**CC313 Midterm Project Deliverable · Pangasinan State University**  
+**CC313 Midterm Project Deliverable · Pampanga State University**  
 Author: Keneth ([@cutiekyee](https://github.com/cutiekyee))
 
 ## 🌐 Live Interactive Prototypes (Public Web Access)
