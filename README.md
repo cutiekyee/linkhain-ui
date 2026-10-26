@@ -1,37 +1,37 @@
-# Linkhain Campus Hub · Profile & Message UI Redesign
+# Linkhain Campus Hub · Mobile UI Redesign Specification
 
 **CC313 Midterm Project Deliverable · Pangasinan State University**  
 Author: Keneth ([@cutiekyee](https://github.com/cutiekyee))
 
-## 🌐 Live Interactive Prototype
-👉 **[Open Live Prototype in Browser](https://cutiekyee.github.io/linkhain-ui/)**  
-*(Optimized for mobile and desktop with interactive persona switcher, live chat, and commission modal)*
-
-📄 **[Download 8-Page PDF Specification Report](./Linkhain_Profile_Message_Redesign_Report.pdf)**
+## 🌐 Live Interactive Prototypes (Public Web Access)
+* 🔐 **[Formal Login & Create Account Portal](https://cutiekyee.github.io/linkhain-ui/auth.html)**  
+  *(Formal institutional fields, PSU Gmail / Google SSO login, demo logins completely removed)*
+* 🛍️ **[Profile & Message Screen Prototype](https://cutiekyee.github.io/linkhain-ui/)**  
+  *(Seller sold items with commission CTA, buyer favorites wishlist, bi-directional chat)*
+* 📄 **[Download 8-Page PDF Specification Report](./Linkhain_Profile_Message_Redesign_Report.pdf)**
 
 ---
 
 ## 📱 Visual Highlights
 
-### Dual Comparison: Profile & Message Screens
+### 1. Formal Authentication & Registration (Sign In & Create Account)
+- **Institutional Context**: Formal PSU SSO authentication, Department dropdowns, student ID examples.
+- **Google / Institutional Gmail**: One-tap authentication with active `@psu.edu.ph` accounts.
+- **Demo Logins Removed**: Clean, production-ready, institutional layout.
+
+![Auth Dual View](preview_auth_dual.png)
+
+### 2. Google Workspace Account Picker
+![Google Picker](preview_auth_google_picker.png)
+
+### 3. Profile & Message Screen Suite
 ![Dual View](preview_dual.png)
 
-### 1. Profile Screen (Seller Sold Portfolio & Buyer Favorites)
 - **Seller Mode**: Showcases completed sales with "SOLD OUT" badges and the **`[ ✦ Commission Similar Item ]`** CTA button.
 - **Buyer Mode**: Displays bookmarked marketplace items with active red heart toggles and instant campus meetup ordering.
+- **Bi-Directional Message Screen**: Distinct left (seller) and right (buyer) speech bubbles with sticky transaction card.
 
 ![Profile Seller](preview_profile_seller.png)  
-![Profile Buyer](preview_profile_buyer.png)
-
-### 2. Interactive Commission Request Sheet
-Pre-populates item info, customization notes, budget chips, and designated safe daylight meetup zones (*PSU Library Gate 3*).
-
-![Commission Sheet](preview_commission_modal.png)
-
-### 3. Bi-Directional Message Screen
-- **Left-Aligned Seller Messages**: Light card backing with seller avatar and inline photo previews.
-- **Right-Aligned Buyer Messages**: Deep Maroon (`#5F1C2E`) bubbles with double-check read receipts (`✓✓`).
-- **Sticky Transaction Card**: Anchors product thumbnail, price (`₱480.00`), and campus meetup terms.
-- **Campus Quick-Reply Chips**: One-tap status updates with live typing simulation.
-
+![Profile Buyer](preview_profile_buyer.png)  
+![Commission Sheet](preview_commission_modal.png)  
 ![Message Screen](preview_message.png)
