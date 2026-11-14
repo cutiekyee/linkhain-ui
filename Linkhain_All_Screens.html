@@ -1,0 +1,2265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Linkhain · 10-Screen Responsive Prototype (100% MIT App Inventor Architecture)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --maroon: #5F1C2E;         /* &HFF5F1C2E PSU Maroon */
+      --maroon-dark: #3E0F1E;    /* &HFF3E0F1E */
+      --maroon-light: #7E263E;   /* &HFF7E263E */
+      --maroon-soft: #F9EFF2;    /* &HFFF9EFF2 */
+      --gold: #CCA668;           /* &HFFCCA668 Warm Accent Gold */
+      --gold-light: #FBF4E8;     /* &HFFFBF4E8 */
+      --ground: #F7F4F1;         /* &HFFF7F4F1 Warm Paper Ground */
+      --card-white: #FFFFFF;     /* &HFFFFFFFF Pure White */
+      --ink: #241820;            /* &HFF241820 Charcoal Primary */
+      --ink-muted: #8A7B83;      /* &HFF8A7B83 Slate Secondary */
+      --border: #EAE3DC;         /* &HFFEAE3DC Divider Stroke */
+      --input-bg: #F5F1EE;       /* &HFFF5F1EE Input Arrangement */
+      --teal-bg: #ECFDF5;        /* &HFFECFDF5 Verified Badge Bg */
+      --teal-txt: #0D9488;       /* &HFF0D9488 Verified Teal */
+      --radius-rounded: 10px;    /* AI2 Shape: 1 */
+    }
+
+    /* REVISED MODERN SLEEK DARK THEME (OBSIDIAN & CRISP CONTRAST) */
+    [data-theme="dark"] {
+      --ground: #0D0F14;         /* Deep neutral slate-black */
+      --card-white: #161922;     /* Elevated dark card surface */
+      --ink: #F8FAFC;            /* Crisp off-white primary text */
+      --ink-muted: #94A3B8;      /* Clean slate grey secondary text */
+      --border: #262D3D;         /* Sharp slate border */
+      --input-bg: #1E2330;       /* Clean input container */
+      --maroon: #C4385B;         /* Vibrant rose-crimson maroon (pops against dark) */
+      --maroon-dark: #10131A;    /* Top header background in dark mode */
+      --maroon-light: #E04D73;   /* Bright hover maroon */
+      --maroon-soft: rgba(196, 56, 91, 0.22);
+      --gold: #F5D061;           /* Luminous metallic gold */
+      --gold-light: #2A2515;
+      --teal-bg: #0D2E2B;
+      --teal-txt: #2DD4BF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+      background: #E5DFDC;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    [data-theme="dark"] body {
+      background: #080A0E;
+    }
+
+    /* Top Control & Navigation Header */
+    .app-header {
+      background: var(--maroon-dark);
+      color: #FFFFFF;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-box img {
+      height: 30px;
+      width: 30px;
+      object-fit: contain;
+    }
+
+    .brand-box h1 {
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-box span.badge {
+      background: rgba(204, 166, 104, 0.25);
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      border: 1px solid rgba(204, 166, 104, 0.4);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* View Mode Switcher */
+    .view-switcher {
+      display: inline-flex;
+      background: rgba(0,0,0,0.3);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .view-btn {
+      background: none;
+      border: none;
+      color: #D4C6CC;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .view-btn.active {
+      background: var(--gold);
+      color: #1A1105;
+      font-weight: 800;
+    }
+
+    .btn-action-pill {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-pill:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    /* Screen Selector Pill Bar (All 10 Screens) */
+    .screens-nav-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      overflow-x: auto;
+      white-space: nowrap;
+      background: rgba(0,0,0,0.22);
+    }
+
+    .screens-nav-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .screens-nav-bar::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.25);
+      border-radius: 4px;
+    }
+
+    .screen-pill {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #E2D7DC;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .screen-pill:hover {
+      background: rgba(255,255,255,0.18);
+      color: #FFFFFF;
+    }
+
+    .screen-pill.active {
+      background: #FFFFFF;
+      color: var(--maroon);
+      border-color: #FFFFFF;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .screen-pill span.num {
+      background: rgba(95,28,46,0.15);
+      color: var(--maroon);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 99px;
+    }
+    .screen-pill.active span.num {
+      background: var(--maroon);
+      color: #FFFFFF;
+    }
+
+    /* Main Workspace */
+    .main-workspace {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-y: auto;
+    }
+
+    .viewport-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    /* Device Simulator Frames */
+    .simulator-frame {
+      background: var(--ground);
+      border: 10px solid #14171E;
+      border-radius: 44px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] .simulator-frame {
+      border-color: #1E2330;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    }
+
+    .simulator-frame.mode-phone {
+      width: 395px;
+      max-width: 100%;
+      height: 840px;
+    }
+
+    .simulator-frame.mode-tablet {
+      width: 768px;
+      max-width: 100%;
+      height: 920px;
+      border-radius: 32px;
+      border-width: 12px;
+    }
+
+    .simulator-frame.mode-fluid {
+      width: 100%;
+      max-width: 1040px;
+      min-height: 840px;
+      border-radius: 18px;
+      border-width: 6px;
+    }
+
+    /* Mobile Status Bar */
+    .phone-status-bar {
+      height: 38px;
+      background: var(--card-white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    .dynamic-island {
+      width: 90px;
+      height: 18px;
+      background: #080A0E;
+      border-radius: 20px;
+    }
+
+    /* Phone Screen Scroll View (Native AI2: VerticalScrollArrangement) */
+    .screen-scroll-view {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: none;
+      flex-direction: column;
+      position: relative;
+      background: var(--ground);
+    }
+
+    .screen-scroll-view.active {
+      display: flex;
+    }
+
+    .screen-scroll-view::-webkit-scrollbar {
+      width: 4px;
+    }
+    .screen-scroll-view::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    /* PROMINENT, UN-CLIPPABLE BACK BUTTON (VECTOR SVG) */
+    .ai2-btn-back {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .ai2-btn-back:hover {
+      background: var(--maroon-soft);
+      color: var(--maroon);
+      border-color: var(--maroon);
+    }
+
+    /* Common AI2 UI Layouts */
+    .ai2-screen-bar {
+      padding: 10px 14px;
+      background: var(--card-white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      gap: 10px;
+    }
+
+    .ai2-bar-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--maroon);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ai2-input-wrap {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-rounded);
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      transition: border-color 0.15s ease;
+    }
+
+    .ai2-input-wrap:focus-within {
+      border-color: var(--maroon);
+    }
+
+    .ai2-input-wrap img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      opacity: 0.65;
+    }
+
+    .ai2-input-wrap input,
+    .ai2-input-wrap textarea,
+    .ai2-input-wrap select {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--ink);
+      width: 100%;
+    }
+
+    .ai2-btn-primary {
+      width: 100%;
+      background: var(--maroon);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 16px;
+      border-radius: var(--radius-rounded);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s ease;
+    }
+    .ai2-btn-primary:hover {
+      background: var(--maroon-light);
+    }
+
+    .ai2-btn-secondary {
+      width: 100%;
+      background: var(--card-white);
+      color: var(--maroon);
+      border: 1.5px solid var(--maroon);
+      padding: 11px 16px;
+      border-radius: var(--radius-rounded);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .ai2-btn-secondary:hover {
+      background: var(--maroon-soft);
+    }
+
+    .ai2-section-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin: 12px 0 5px 0;
+    }
+
+    /* Native AI2 Bottom Navigation Bar (HorizontalArrangement: navBar) */
+    .ai2-nav-bar {
+      height: 62px;
+      background: var(--card-white);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 4px 4px 4px;
+      flex-shrink: 0;
+      z-index: 90;
+      position: relative;
+    }
+
+    .ai2-nav-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--ink-muted);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+      padding: 4px 0;
+      transition: color 0.15s ease;
+    }
+
+    .ai2-nav-tile.active {
+      color: var(--maroon);
+    }
+
+    .ai2-nav-tile img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      opacity: 0.7;
+    }
+
+    .ai2-nav-tile.active img {
+      opacity: 1;
+    }
+
+    /* CENTER SELL BUTTON: PLUS SIGN ONLY (NO "SELL" TEXT) */
+    .ai2-nav-plus-btn {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      background: var(--maroon);
+      color: #FFFFFF;
+      border: 2.5px solid var(--card-white);
+      box-shadow: 0 4px 14px rgba(95, 28, 46, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      margin-bottom: 2px;
+    }
+
+    .ai2-nav-plus-btn:hover {
+      transform: scale(1.08);
+      background: var(--maroon-light);
+    }
+
+    .ai2-nav-plus-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.8;
+    }
+
+    /* Category Filter Chips */
+    .ai2-chip {
+      background: var(--card-white);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: var(--radius-rounded);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .ai2-chip.active {
+      background: var(--maroon);
+      color: #FFFFFF;
+      border-color: var(--maroon);
+    }
+
+    /* Price Sort Spinner / Dropdown (sprSort) */
+    .ai2-sort-select {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-rounded);
+      padding: 7px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+    }
+
+    .ai2-sort-select:focus {
+      border-color: var(--maroon);
+    }
+
+    /* AI2 Blueprint Tag */
+    .blueprint-tag {
+      display: none;
+      position: absolute;
+      background: #0284C7;
+      color: #FFFFFF;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+      z-index: 50;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    body.blueprint-mode .blueprint-tag {
+      display: inline-block;
+    }
+
+    /* All Screens Gallery Grid View */
+    .gallery-view-grid {
+      display: none;
+      width: 100%;
+      max-width: 1400px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      padding: 10px 0;
+    }
+
+    .gallery-view-grid.active {
+      display: grid;
+    }
+
+    .gallery-card {
+      background: var(--card-white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+      border-color: var(--maroon);
+    }
+
+    .gallery-card-header {
+      padding: 12px 16px;
+      background: var(--maroon-dark);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gallery-card-header h3 {
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gallery-card-header span.tag {
+      background: rgba(204, 166, 104, 0.3);
+      color: var(--gold);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .gallery-card-preview {
+      height: 320px;
+      overflow-y: hidden;
+      background: var(--ground);
+      position: relative;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .gallery-card-footer {
+      padding: 10px 16px;
+      background: var(--card-white);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    .btn-zoom-card {
+      background: var(--maroon-soft);
+      border: 1px solid rgba(95,28,46,0.15);
+      color: var(--maroon);
+      font-weight: 800;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Modal / Drawer Overlays */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-sheet {
+      background: var(--card-white);
+      width: 100%;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 18px 20px 24px 20px;
+      max-height: 85%;
+      overflow-y: auto;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.25);
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #151820;
+      color: #FFFFFF;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      display: none;
+      z-index: 9999;
+      border-left: 4px solid var(--teal-txt);
+    }
+
+    /* RESPONSIVE MEDIA QUERIES */
+    @media (max-width: 650px) {
+      .header-top {
+        padding: 8px 12px;
+      }
+      .brand-box h1 {
+        font-size: 14px;
+      }
+      .screens-nav-bar {
+        padding: 6px 12px;
+      }
+      .main-workspace {
+        padding: 6px 2px;
+      }
+      .simulator-frame.mode-phone,
+      .simulator-frame.mode-tablet,
+      .simulator-frame.mode-fluid {
+        width: 100% !important;
+        height: calc(100vh - 110px) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      .gallery-view-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 651px) and (max-width: 1024px) {
+      .gallery-view-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Executive Responsive Control Bar -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="brand-box">
+        <img src="assets/logo_mark.png" alt="Linkhain">
+        <div>
+          <h1>Linkhain <span class="badge">100% MIT APP INVENTOR NATIVE</span></h1>
+          <p style="font-size: 10px; color: #D8CCD1;">Responsive Architecture Viewer · Pangasinan State University</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- View Mode Switcher -->
+        <div class="view-switcher">
+          <button class="view-btn active" onclick="setViewMode('phone')" id="btn-view-phone">📱 Phone</button>
+          <button class="view-btn" onclick="setViewMode('tablet')" id="btn-view-tablet">📟 Tablet</button>
+          <button class="view-btn" onclick="setViewMode('fluid')" id="btn-view-fluid">💻 Fluid</button>
+          <button class="view-btn" onclick="setViewMode('gallery')" id="btn-view-gallery">🗺️ All Screens</button>
+        </div>
+
+        <!-- AI2 Blueprint Overlay Toggle -->
+        <button class="btn-action-pill" onclick="toggleBlueprintMode()" id="btn-blueprint">
+          🔍 Blueprint Mode
+        </button>
+
+        <!-- Light / Dark Theme Toggle -->
+        <button class="btn-action-pill" onclick="toggleTheme()" id="btn-theme">
+          🌓 Theme
+        </button>
+      </div>
+    </div>
+
+    <!-- Screen Selector Scrollable Pill Bar (All 10 Screens) -->
+    <nav class="screens-nav-bar" id="screens-bar">
+      <button class="screen-pill" data-target="Screen1" onclick="navigateToScreen('Screen1')">
+        <span class="num">1</span> Screen1 (Auth)
+      </button>
+      <button class="screen-pill" data-target="Screen2" onclick="navigateToScreen('Screen2')">
+        <span class="num">2</span> Screen2 (Roles)
+      </button>
+      <button class="screen-pill active" data-target="Dashboard" onclick="navigateToScreen('Dashboard')">
+        <span class="num">3</span> Dashboard (Market)
+      </button>
+      <button class="screen-pill" data-target="ListingDetail" onclick="navigateToScreen('ListingDetail')">
+        <span class="num">4</span> ListingDetail
+      </button>
+      <button class="screen-pill" data-target="CampusMarkterPlace" onclick="navigateToScreen('CampusMarkterPlace')">
+        <span class="num">5</span> CampusMarkterPlace (Sell)
+      </button>
+      <button class="screen-pill" data-target="CommissionRequest" onclick="navigateToScreen('CommissionRequest')">
+        <span class="num">6</span> CommissionRequest
+      </button>
+      <button class="screen-pill" data-target="Inbox" onclick="navigateToScreen('Inbox')">
+        <span class="num">7</span> Inbox (Live Chat)
+      </button>
+      <button class="screen-pill" data-target="StudentDashboard" onclick="navigateToScreen('StudentDashboard')">
+        <span class="num">8</span> StudentDashboard (Stats)
+      </button>
+      <button class="screen-pill" data-target="UserProfile" onclick="navigateToScreen('UserProfile')">
+        <span class="num">9</span> UserProfile
+      </button>
+      <button class="screen-pill" data-target="Settings" onclick="navigateToScreen('Settings')">
+        <span class="num">10</span> Settings
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Responsive Workspace -->
+  <main class="main-workspace">
+
+    <!-- Single Screen Device Simulator (Phone / Tablet / Fluid) -->
+    <div class="viewport-container" id="viewport-single">
+      <div class="simulator-frame mode-phone" id="simulator-frame">
+        
+        <!-- Status Bar -->
+        <div class="phone-status-bar">
+          <span>9:41</span>
+          <div class="dynamic-island"></div>
+          <span>PSU 5G</span>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 1: Screen1 (Auth / Welcome / Sign In / Register)           -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-Screen1">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: VSA_Root</span>
+          
+          <div style="padding: 24px 20px; text-align: center;">
+            <img src="assets/logo_full.png" onerror="this.src='assets/logo_header.png'" style="max-width: 170px; height: auto; margin-bottom: 10px;">
+            <h2 style="font-size: 16px; font-weight: 800; color: var(--maroon); margin-bottom: 4px;">Linkhain Student Marketplace</h2>
+            <p style="font-size: 11px; color: var(--ink-muted); margin-bottom: 14px;">Safe Student Marketplace & Creator Commissions</p>
+
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; text-align: left;">
+              <img src="assets/ic_badgecheck_teal.png" style="width: 18px; height: 18px; flex-shrink: 0;">
+              <div>
+                <div style="font-size: 11px; font-weight: 800; color: var(--teal-txt);">Pangasinan State University (PSU)</div>
+                <div style="font-size: 10px; color: var(--ink-muted);">PSU: buy + sell | Other Google accounts: buy only</div>
+              </div>
+            </div>
+
+            <!-- Tab Switcher (Sign In vs Register) -->
+            <div style="display: flex; background: var(--input-bg); border-radius: 8px; padding: 3px; margin-bottom: 16px;">
+              <button onclick="setAuthTab('login')" id="btn-auth-login" style="flex: 1; padding: 7px; border: none; border-radius: 6px; font-size: 11px; font-weight: 800; background: var(--card-white); color: var(--maroon); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">Sign In</button>
+              <button onclick="setAuthTab('register')" id="btn-auth-register" style="flex: 1; padding: 7px; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; background: transparent; color: var(--ink-muted); cursor: pointer;">Create Account</button>
+            </div>
+
+            <!-- Auth Form Fields -->
+            <div id="auth-register-fields" style="display: none; text-align: left;">
+              <div class="ai2-section-label">Full Name</div>
+              <div class="ai2-input-wrap">
+                <img src="assets/auth_name_brown.png" onerror="this.src='assets/ic_userround_slate.png'">
+                <input type="text" placeholder="e.g. Jose Keneth Manalo" value="Jose Keneth Manalo">
+              </div>
+
+              <div class="ai2-section-label">Campus / Department</div>
+              <div class="ai2-input-wrap">
+                <img src="assets/auth_school_brown.png" onerror="this.src='assets/logo_mark.png'">
+                <input type="text" placeholder="e.g. PSU Urdaneta - BSIT" value="PSU Urdaneta - BS Information Technology">
+              </div>
+            </div>
+
+            <div style="text-align: left;">
+              <div class="ai2-section-label">Campus Email (@psu.edu.ph)</div>
+              <div class="ai2-input-wrap">
+                <img src="assets/auth_mail_brown.png" onerror="this.src='assets/ic_messagesquare_slate.png'">
+                <input type="email" placeholder="student@psu.edu.ph" value="maya.lin@psu.edu.ph">
+              </div>
+
+              <div class="ai2-section-label">Password</div>
+              <div class="ai2-input-wrap">
+                <img src="assets/auth_lock_brown.png" onerror="this.src='assets/ic_badgecheck_teal.png'">
+                <input type="password" placeholder="••••••••••••" value="psupassword2026">
+              </div>
+            </div>
+
+            <button class="ai2-btn-primary" onclick="simulateAuthSuccess()" style="margin-top: 8px; margin-bottom: 12px;">
+              Sign In to Campus Market
+            </button>
+
+            <div style="font-size: 11px; color: var(--ink-muted); margin-bottom: 12px;">or continue with campus single sign-on</div>
+
+            <button onclick="simulateAuthSuccess()" style="width: 100%; background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 12px; color: var(--ink); margin-bottom: 14px;">
+              <img src="assets/auth_google_button.png" onerror="this.src='assets/logo_mark.png'" style="height: 18px; object-fit: contain;">
+              Continue with PSU Google Account
+            </button>
+
+            <div style="font-size: 10px; color: var(--ink-muted); line-height: 1.5;">
+              By signing in, you agree to the <a href="#" style="color: var(--maroon); font-weight: 700;">PSU Student Market Code of Conduct</a> and Verified Meetup Safety Policy.
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 2: Screen2 (Onboarding & Role Selection)                   -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-Screen2">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: VSA2_Root</span>
+          
+          <div style="padding: 24px 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+              <img src="assets/logo_mark.png" style="width: 32px; height: 32px;">
+              <div>
+                <h2 style="font-size: 16px; font-weight: 800; color: var(--maroon);">Select Your Campus Role</h2>
+                <p style="font-size: 11px; color: var(--ink-muted);">Register once to buy, sell and take commissions</p>
+              </div>
+            </div>
+
+            <!-- Role Card 1 -->
+            <div onclick="selectOnboardRole(this)" class="ai2-role-box selected" style="background: var(--card-white); border: 2px solid var(--maroon); border-radius: var(--radius-rounded); padding: 14px; margin-bottom: 10px; cursor: pointer;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 24px;">🛍️</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 800; color: var(--maroon);">Student Buyer</div>
+                  <div style="font-size: 11px; color: var(--ink-muted);">Find affordable textbooks, tech accessories, dorm gear, and campus snacks.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Role Card 2 -->
+            <div onclick="selectOnboardRole(this)" class="ai2-role-box" style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 14px; margin-bottom: 10px; cursor: pointer;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 24px;">🎨</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 800; color: var(--ink);">Creator & Artisan Seller</div>
+                  <div style="font-size: 11px; color: var(--ink-muted);">Sell handmade crochet, custom art prints, stickers, and take digital art commissions.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Role Card 3 -->
+            <div onclick="selectOnboardRole(this)" class="ai2-role-box" style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 14px; margin-bottom: 16px; cursor: pointer;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 24px;">💻</div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 800; color: var(--ink);">Tech & Preloved Seller</div>
+                  <div style="font-size: 11px; color: var(--ink-muted);">Sell your scientific calculators, drawing tablets, uniform sets, and study guides.</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: var(--maroon-soft); border: 1px solid rgba(95,28,46,0.2); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 18px;">
+              <div style="font-size: 11px; font-weight: 800; color: var(--maroon); margin-bottom: 4px;">🤝 Safe Campus Meetup Guarantee</div>
+              <div style="font-size: 10px; color: var(--ink); line-height: 1.5;">
+                Always coordinate handovers at official university zones (PSU Library Gate, AS Lobby, or Student Pavilion). Cash on Meetup or verified GCash upon inspection.
+              </div>
+            </div>
+
+            <button class="ai2-btn-primary" onclick="navigateToScreen('Dashboard')">
+              Enter Marketplace Feed →
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 3: Dashboard (Marketplace with Sort & Categories)          -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view active" id="screen-view-Dashboard">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: mktScroll</span>
+
+          <!-- Header -->
+          <div style="padding: 12px 16px; background: var(--card-white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="assets/logo_mark.png" style="width: 24px; height: 24px;">
+                <span style="font-size: 15px; font-weight: 800; color: var(--maroon);">Marketplace</span>
+              </div>
+              <button onclick="openCartModal()" style="background: var(--maroon-soft); border: 1px solid rgba(95,28,46,0.15); color: var(--maroon); padding: 5px 10px; border-radius: 99px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                <img src="assets/ic_cart_slate.png" style="width: 14px; height: 14px;">
+                <span id="cart-counter-text">Cart (0)</span>
+              </button>
+            </div>
+
+            <!-- searchRow: txtSearch_wrap + btnSearch + sprSort (Price/Order sorting) -->
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <div class="ai2-input-wrap" style="flex: 1; margin-bottom: 0; padding: 7px 10px;">
+                <img src="assets/ic_search_slate.png">
+                <input type="text" id="dashboard-search-input" oninput="filterDashboardFeed()" placeholder="Search items, sellers, gear...">
+              </div>
+
+              <!-- sprSort: ElementsFromString: Newest,Price: Low to High,Price: High to Low -->
+              <select id="dashboard-sort-select" onchange="filterDashboardFeed()" class="ai2-sort-select" title="Sort by price or recency">
+                <option value="Newest">Newest</option>
+                <option value="PriceLow">Price: Low to High</option>
+                <option value="PriceHigh">Price: High to Low</option>
+              </select>
+
+              <button onclick="filterDashboardFeed()" style="background: var(--maroon); border: none; color: #fff; padding: 8px 12px; border-radius: var(--radius-rounded); font-size: 11px; font-weight: 800; cursor: pointer;">
+                Go
+              </button>
+            </div>
+          </div>
+
+          <!-- chipsCat: Category Filter Chips (exact strings from Dashboard.bky) -->
+          <div style="background: var(--card-white); border-bottom: 1px solid var(--border); padding: 8px 12px; display: flex; gap: 6px; overflow-x: auto; white-space: nowrap;">
+            <button class="ai2-chip active" onclick="setDashboardCategory('All Categories', this)">All Categories</button>
+            <button class="ai2-chip" onclick="setDashboardCategory('Art Prints', this)">Art Prints</button>
+            <button class="ai2-chip" onclick="setDashboardCategory('Handmade Crafts', this)">Handmade Crafts</button>
+            <button class="ai2-chip" onclick="setDashboardCategory('Study & Tech', this)">Study & Tech</button>
+            <button class="ai2-chip" onclick="setDashboardCategory('Digital Art', this)">Digital Art</button>
+            <button class="ai2-chip" onclick="setDashboardCategory('Campus Apparel', this)">Campus Apparel</button>
+            <button class="ai2-chip" onclick="setDashboardCategory('Design Services', this)">Design Services</button>
+            <button class="ai2-chip" onclick="setDashboardCategory('My Listings', this)">My Listings</button>
+          </div>
+
+          <!-- Feed Count Row -->
+          <div style="padding: 10px 14px 4px 14px; display: flex; align-items: center; justify-content: space-between;">
+            <span id="dashboard-count-label" style="font-size: 11px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase;">8 Campus Listings Available</span>
+            <span style="font-size: 10px; color: var(--teal-txt); font-weight: 700; display: flex; align-items: center; gap: 3px;">
+              <img src="assets/ic_badgecheck_teal.png" style="width: 12px; height: 12px;"> Verified PSU
+            </span>
+          </div>
+
+          <!-- 2-Column Product Grid (cardEdge_* / cardCol_*) -->
+          <div id="dashboard-feed-grid" style="padding: 8px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <!-- Rendered dynamically by JavaScript -->
+          </div>
+
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 4: ListingDetail (Product Inspection & Direct Offer)       -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-ListingDetail">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: detailScroll</span>
+          
+          <!-- Bar with Prominent Back Button -->
+          <div class="ai2-screen-bar">
+            <button class="ai2-btn-back" onclick="navigateToScreen('Dashboard')" title="Back to Marketplace">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <span class="ai2-bar-title" id="detail-bar-title">Item Details</span>
+            <button onclick="showToast('⭐ Saved to your campus wishlist!')" style="background: none; border: none; font-size: 18px; cursor: pointer;">🤍</button>
+          </div>
+
+          <!-- Product Image Showcase -->
+          <div style="width: 100%; height: 260px; background: #000; position: relative;">
+            <img id="detail-main-img" src="assets/l1.png" style="width: 100%; height: 100%; object-fit: cover;">
+            <span id="detail-condition-tag" style="position: absolute; bottom: 12px; left: 12px; background: rgba(36, 24, 32, 0.85); color: #FFF; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">Brand New</span>
+          </div>
+
+          <div style="padding: 16px 18px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px;">
+              <div id="detail-price-text" style="font-size: 22px; font-weight: 800; color: var(--maroon);">₱350</div>
+              <span id="detail-category-badge" style="font-size: 10px; font-weight: 700; color: var(--ink-muted); background: var(--input-bg); padding: 2px 8px; border-radius: 4px;">Art Prints</span>
+            </div>
+
+            <h2 id="detail-title-text" style="font-size: 15px; font-weight: 800; color: var(--ink); line-height: 1.35; margin-bottom: 12px;">
+              Ghibli-Style Campus Sunset Art Print (A4 Matte Finish)
+            </h2>
+
+            <!-- Campus Meetup Location Pill -->
+            <div style="background: var(--maroon-soft); border: 1px solid rgba(95,28,46,0.15); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+              <span style="font-size: 16px;">📍</span>
+              <div>
+                <div style="font-size: 10px; font-weight: 800; color: var(--maroon); text-transform: uppercase;">Designated Campus Meetup Spot</div>
+                <div id="detail-meetup-text" style="font-size: 12px; font-weight: 700; color: var(--ink);">UP Sunken Garden / AS Lobby</div>
+              </div>
+            </div>
+
+            <!-- Seller Profile Card -->
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <img id="detail-seller-av" src="assets/av_maya.png" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <span id="detail-seller-name" style="font-size: 13px; font-weight: 800; color: var(--ink);">Maya Lin</span>
+                    <img src="assets/ic_badgecheck_teal.png" style="width: 13px; height: 13px;">
+                  </div>
+                  <div style="font-size: 11px; color: var(--ink-muted);">PSU Creator · 4.9 ★ (38 reviews)</div>
+                </div>
+              </div>
+              <button onclick="navigateToScreen('UserProfile')" style="background: var(--input-bg); border: 1px solid var(--border); color: var(--maroon); font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 6px; cursor: pointer;">
+                View Profile
+              </button>
+            </div>
+
+            <!-- Description -->
+            <div class="ai2-section-label">Item Description & Specifications</div>
+            <p id="detail-desc-text" style="font-size: 12px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 20px;">
+              High-quality 300gsm archival matte print inspired by late afternoon sunsets over university old acacia trees. Comes with protective sleeve and cardboard backing. Perfect for dorm study tables!
+            </p>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 10px;">
+              <button class="ai2-btn-secondary" onclick="openChatFromDetail()" style="flex: 1;">
+                💬 Message Seller
+              </button>
+              <button class="ai2-btn-primary" onclick="addCurrentItemToCart()" style="flex: 1;">
+                🛍️ Campus Meetup Buy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 5: CampusMarkterPlace (Post New Item / Sell Screen)        -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-CampusMarkterPlace">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: sellScroll</span>
+          
+          <div class="ai2-screen-bar">
+            <button class="ai2-btn-back" onclick="navigateToScreen('Dashboard')" title="Back to Marketplace">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <span class="ai2-bar-title">Post New Campus Item</span>
+            <span style="font-size: 11px; color: var(--teal-txt); font-weight: 700;">PSU Only</span>
+          </div>
+
+          <div style="padding: 16px 18px;">
+            <!-- Photo Upload Area -->
+            <div style="background: var(--card-white); border: 2px dashed var(--border); border-radius: var(--radius-rounded); padding: 18px; text-align: center; margin-bottom: 16px;">
+              <img id="sell-photo-preview" src="assets/logo_header.png" style="max-height: 100px; max-width: 100%; object-fit: contain; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+              <button onclick="simulatePhotoPick()" style="background: var(--maroon-soft); border: 1px solid rgba(95,28,46,0.2); color: var(--maroon); font-size: 11px; font-weight: 800; padding: 7px 14px; border-radius: 6px; cursor: pointer;">
+                📷 Choose Item Photo
+              </button>
+              <div style="font-size: 10px; color: var(--ink-muted); margin-top: 6px;">Clear photo of your textbook, craft, or gear</div>
+            </div>
+
+            <!-- Form -->
+            <div class="ai2-section-label">ITEM TITLE *</div>
+            <div class="ai2-input-wrap">
+              <input type="text" id="sell-input-title" placeholder="e.g. Handmade Matcha Frog Crochet Plushie">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <div class="ai2-section-label">CATEGORY</div>
+                <div class="ai2-input-wrap">
+                  <select id="sell-input-cat">
+                    <option value="Art Prints">Art Prints</option>
+                    <option value="Handmade Crafts" selected>Handmade Crafts</option>
+                    <option value="Study & Tech">Study & Tech</option>
+                    <option value="Digital Art">Digital Art</option>
+                    <option value="Campus Apparel">Campus Apparel</option>
+                    <option value="Design Services">Design Services</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <div class="ai2-section-label">CONDITION</div>
+                <div class="ai2-input-wrap">
+                  <select id="sell-input-cond">
+                    <option value="Brand New">Brand New</option>
+                    <option value="Handmade" selected>Handmade</option>
+                    <option value="Like New">Like New</option>
+                    <option value="Good">Good</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <div class="ai2-section-label">PRICE (₱) *</div>
+                <div class="ai2-input-wrap">
+                  <input type="number" id="sell-input-price" placeholder="480">
+                </div>
+              </div>
+              <div>
+                <div class="ai2-section-label">LISTING TYPE</div>
+                <div class="ai2-input-wrap">
+                  <select id="sell-input-type">
+                    <option value="Direct Sale">Direct Sale</option>
+                    <option value="Commission">Commission</option>
+                    <option value="Preloved">Preloved</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="ai2-section-label">CAMPUS MEETUP LOCATION *</div>
+            <div class="ai2-input-wrap">
+              <input type="text" id="sell-input-location" placeholder="e.g. PSU Library Entrance / AS Pavilion" value="PSU Student Center Grounds">
+            </div>
+
+            <div class="ai2-section-label">ITEM DESCRIPTION & DETAILS</div>
+            <div class="ai2-input-wrap" style="height: auto;">
+              <textarea id="sell-input-desc" rows="3" placeholder="Describe dimensions, materials, or reason for selling..."></textarea>
+            </div>
+
+            <button class="ai2-btn-primary" onclick="publishNewListing()" style="margin-top: 10px; margin-bottom: 10px;">
+              Publish Listing to Marketplace
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 6: CommissionRequest (Custom Art & Design Commissions)     -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-CommissionRequest">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: commScroll</span>
+          
+          <div class="ai2-screen-bar">
+            <button class="ai2-btn-back" onclick="navigateToScreen('Dashboard')" title="Back to Marketplace">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <span class="ai2-bar-title">Custom Commission</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 800;">Student Creator</span>
+          </div>
+
+          <div style="padding: 16px 18px;">
+            <!-- Target Artist Card -->
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+              <img src="assets/av_maya.png" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
+              <div style="flex: 1;">
+                <div style="font-size: 11px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase;">CREATOR</div>
+                <div style="font-size: 14px; font-weight: 800; color: var(--maroon);">Maya Lin (Digital & Chibi Artist)</div>
+                <div style="font-size: 11px; color: var(--teal-txt); font-weight: 700;">★ 4.9 · Typical Turnaround: 3-5 days</div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="ai2-section-label">PROJECT TITLE *</div>
+            <div class="ai2-input-wrap">
+              <input type="text" id="comm-input-title" placeholder="e.g. Custom Chibi Graduation Avatar for Org Poster" value="Custom Digital Chibi Graduation Portrait">
+            </div>
+
+            <div class="ai2-section-label">DETAILED BRIEF & SPECIFICATIONS *</div>
+            <div class="ai2-input-wrap" style="height: auto;">
+              <textarea id="comm-input-brief" rows="4" placeholder="Describe characters, style, outfit, color palette, or background...">Full-color chibi avatar of me holding my BSIT thesis binder with university acacia leaves in the background. Transparent PNG format.</textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <div class="ai2-section-label">BUDGET (₱) *</div>
+                <div class="ai2-input-wrap">
+                  <input type="number" id="comm-input-budget" value="550">
+                </div>
+              </div>
+              <div>
+                <div class="ai2-section-label">TARGET DEADLINE</div>
+                <div class="ai2-input-wrap">
+                  <input type="date" id="comm-input-date" value="2026-11-25">
+                </div>
+              </div>
+            </div>
+
+            <!-- Commission Milestones -->
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 16px;">
+              <div style="font-size: 11px; font-weight: 800; color: var(--ink); margin-bottom: 8px;">🎨 Commission Workflow</div>
+              <div style="display: flex; justify-content: space-between; font-size: 9px; font-weight: 700; color: var(--ink-muted);">
+                <div style="text-align: center; color: var(--maroon);">1. Send Brief<br>✓ Today</div>
+                <div style="text-align: center;">2. Artist Review<br>24 Hours</div>
+                <div style="text-align: center;">3. Sketch & Draft<br>2 Revisions</div>
+                <div style="text-align: center;">4. Final Handover<br>High-Res PNG</div>
+              </div>
+            </div>
+
+            <button class="ai2-btn-primary" onclick="submitCommissionRequest()">
+              Send Commission Request to Artist
+            </button>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 7: Inbox (Messaging Hub & Live Interactive Chat)           -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-Inbox">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: inb_root</span>
+          
+          <!-- Inbox View Mode: Threads List or Active Chat -->
+          <div id="inbox-threads-view">
+            <div class="ai2-screen-bar">
+              <span class="ai2-bar-title">Campus Messages</span>
+              <span style="font-size: 11px; font-weight: 800; color: var(--teal-txt);">3 Active Meetups</span>
+            </div>
+
+            <div style="padding: 10px 14px;">
+              <div class="ai2-input-wrap" style="margin-bottom: 12px; padding: 7px 12px;">
+                <img src="assets/ic_search_slate.png">
+                <input type="text" placeholder="Search conversations...">
+              </div>
+
+              <!-- Conversation Threads -->
+              <div onclick="openConversation('user-maya')" style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <img src="assets/av_maya.png" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;">
+                <div style="flex: 1;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                    <span style="font-size: 13px; font-weight: 800; color: var(--ink);">Maya Lin</span>
+                    <span style="font-size: 10px; color: var(--ink-muted);">9:38 AM</span>
+                  </div>
+                  <div style="font-size: 11px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">
+                    "See you later at the Sunken Garden AS Lobby!"
+                  </div>
+                </div>
+                <span style="background: var(--maroon); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 99px;">2</span>
+              </div>
+
+              <div onclick="openConversation('user-liam')" style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <img src="assets/av_liam.png" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;">
+                <div style="flex: 1;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                    <span style="font-size: 13px; font-weight: 800; color: var(--ink);">Liam Torres</span>
+                    <span style="font-size: 10px; color: var(--ink-muted);">Yesterday</span>
+                  </div>
+                  <div style="font-size: 11px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">
+                    "The matcha frog plushie is packaged with safety bubble wrap."
+                  </div>
+                </div>
+              </div>
+
+              <div onclick="openConversation('user-chloe')" style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <img src="assets/av_chloe.png" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;">
+                <div style="flex: 1;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                    <span style="font-size: 13px; font-weight: 800; color: var(--ink);">Chloe Santos</span>
+                    <span style="font-size: 10px; color: var(--ink-muted);">Nov 12</span>
+                  </div>
+                  <div style="font-size: 11px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">
+                    "Yes, the Casio 991EX still has its manual & sticker!"
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Live Chat Window with Vector Back Button -->
+          <div id="inbox-chat-view" style="display: none; flex-direction: column; height: 100%;">
+            <div class="ai2-screen-bar">
+              <button class="ai2-btn-back" onclick="closeConversation()" title="Back to Conversations">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+              </button>
+              <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                <img id="chat-header-av" src="assets/av_maya.png" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+                <div>
+                  <div id="chat-header-name" style="font-size: 12px; font-weight: 800; color: var(--maroon);">Maya Lin</div>
+                  <div style="font-size: 9px; color: var(--teal-txt); font-weight: 700;">● Online on campus</div>
+                </div>
+              </div>
+              <button onclick="showToast('📍 Campus Meetup Zone: UP Sunken Garden / AS Lobby')" style="background: var(--input-bg); border: 1px solid var(--border); font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; color: var(--maroon); cursor: pointer;">Meetup Spot</button>
+            </div>
+
+            <!-- Messages Stream -->
+            <div id="chat-messages-container" style="flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+              <div style="align-self: flex-start; max-width: 80%; background: var(--card-white); border: 1px solid var(--border); padding: 9px 12px; border-radius: 12px; border-bottom-left-radius: 2px; font-size: 12px; line-height: 1.4;">
+                Hi Keneth! I saw your order for the Ghibli Sunset A4 Art Print!
+                <div style="font-size: 9px; color: var(--ink-muted); text-align: right; margin-top: 3px;">9:35 AM</div>
+              </div>
+
+              <div style="align-self: flex-end; max-width: 80%; background: var(--maroon); color: #FFF; padding: 9px 12px; border-radius: 12px; border-bottom-right-radius: 2px; font-size: 12px; line-height: 1.4;">
+                Hi Maya! Yes, can we meet around 2:00 PM at the AS Lobby near the bench?
+                <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-align: right; margin-top: 3px;">9:36 AM</div>
+              </div>
+
+              <div style="align-self: flex-start; max-width: 80%; background: var(--card-white); border: 1px solid var(--border); padding: 9px 12px; border-radius: 12px; border-bottom-left-radius: 2px; font-size: 12px; line-height: 1.4;">
+                Perfect! I have class until 1:45 PM so that's exact timing. I'll bring the print in a rigid cardboard sleeve.
+                <div style="font-size: 9px; color: var(--ink-muted); text-align: right; margin-top: 3px;">9:38 AM</div>
+              </div>
+            </div>
+
+            <!-- Message Input (HorizontalArrangement: chatInputWrap) -->
+            <div style="padding: 10px 14px; background: var(--card-white); border-top: 1px solid var(--border); display: flex; gap: 8px;">
+              <input type="text" id="live-chat-input" placeholder="Type a message or meetup detail..." style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 9px 12px; font-size: 12px; outline: none; color: var(--ink);">
+              <button onclick="sendLiveChatMessage()" style="background: var(--maroon); color: #fff; border: none; padding: 0 14px; border-radius: var(--radius-rounded); font-size: 12px; font-weight: 800; cursor: pointer;">
+                Send
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 8: StudentDashboard (Creator & Seller Analytics)           -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-StudentDashboard">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: sta_root</span>
+          
+          <div class="ai2-screen-bar">
+            <span class="ai2-bar-title">Student Creator Hub</span>
+            <button onclick="navigateToScreen('CampusMarkterPlace')" style="background: var(--maroon); color: #fff; border: none; font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 6px; cursor: pointer;">
+              + Post Item
+            </button>
+          </div>
+
+          <div style="padding: 16px 18px;">
+            <!-- Summary Stats 2x2 Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+              <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 14px;">
+                <div style="font-size: 10px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase;">TOTAL SALES</div>
+                <div style="font-size: 20px; font-weight: 800; color: var(--maroon); margin: 4px 0;">₱14,250</div>
+                <div style="font-size: 10px; color: var(--teal-txt); font-weight: 700;">↑ 22% this month</div>
+              </div>
+
+              <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 14px;">
+                <div style="font-size: 10px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase;">ACTIVE LISTINGS</div>
+                <div style="font-size: 20px; font-weight: 800; color: var(--ink); margin: 4px 0;">8</div>
+                <div style="font-size: 10px; color: var(--ink-muted);">In 4 categories</div>
+              </div>
+
+              <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 14px;">
+                <div style="font-size: 10px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase;">MEETUPS DONE</div>
+                <div style="font-size: 20px; font-weight: 800; color: var(--ink); margin: 4px 0;">34</div>
+                <div style="font-size: 10px; color: var(--teal-txt); font-weight: 700;">100% on-time</div>
+              </div>
+
+              <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 14px;">
+                <div style="font-size: 10px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase;">PROFILE VIEWS</div>
+                <div style="font-size: 20px; font-weight: 800; color: var(--ink); margin: 4px 0;">1,280</div>
+                <div style="font-size: 10px; color: var(--ink-muted);">Campus organic</div>
+              </div>
+            </div>
+
+            <!-- Tab Row -->
+            <div class="ai2-section-label">Active Campus Orders & Meetups</div>
+            
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-size: 12px; font-weight: 800; color: var(--ink);">Ghibli Sunset Art Print</span>
+                <span style="font-size: 9px; font-weight: 800; background: var(--maroon-soft); color: var(--maroon); padding: 2px 6px; border-radius: 4px;">Pending Meetup</span>
+              </div>
+              <div style="font-size: 11px; color: var(--ink-muted);">Buyer: Jose Keneth · Meetup: AS Lobby 2:00 PM</div>
+              <div style="font-size: 13px; font-weight: 800; color: var(--maroon); margin-top: 4px;">₱350</div>
+            </div>
+
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-size: 12px; font-weight: 800; color: var(--ink);">Chibi Avatar Commission</span>
+                <span style="font-size: 9px; font-weight: 800; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 6px; border-radius: 4px;">Completed</span>
+              </div>
+              <div style="font-size: 11px; color: var(--ink-muted);">Buyer: Sarah Perez · High-Res Drive Delivered</div>
+              <div style="font-size: 13px; font-weight: 800; color: var(--maroon); margin-top: 4px;">₱550</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 9: UserProfile (REDONE 100% FAITHFUL TO UserProfile.scm)   -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-UserProfile">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: profScroll</span>
+          
+          <!-- profBar: HorizontalArrangement with btnBackProf + profBarTitle + btnSettings -->
+          <div class="ai2-screen-bar">
+            <button class="ai2-btn-back" onclick="navigateToScreen('Dashboard')" title="Back to Marketplace">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <span class="ai2-bar-title" id="prof-bar-title">Student Profile</span>
+            <button onclick="navigateToScreen('Settings')" class="ai2-btn-back" title="Settings">
+              ⚙️
+            </button>
+          </div>
+
+          <div style="padding: 16px 18px;">
+
+            <!-- STATE 1: profView (VerticalArrangement) - Public & Owner Profile View -->
+            <div id="ai2-profView">
+              <span class="blueprint-tag">VerticalArrangement: profView</span>
+
+              <!-- Avatar + Name Header -->
+              <div style="text-align: center; margin-bottom: 14px;">
+                <div style="position: relative; display: inline-block; margin-bottom: 8px;">
+                  <img id="main-avatar-img" src="assets/av_maya.png" onerror="this.src='assets/avatar.png'" style="width: 86px; height: 86px; border-radius: 50%; border: 3px solid var(--maroon); object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                  <img src="assets/ic_badgecheck_teal.png" style="position: absolute; bottom: 2px; right: 2px; width: 22px; height: 22px; background: var(--card-white); border-radius: 50%; padding: 2px;">
+                </div>
+                
+                <h2 id="lblProfName-display" style="font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 3px;">Maya Lin</h2>
+                <div id="lblProfSchool-display" style="font-size: 11px; font-weight: 700; color: var(--maroon); margin-bottom: 8px;">
+                  Pangasinan State University · BS Information Technology
+                </div>
+
+                <!-- badgeRow: HorizontalArrangement -->
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+                  <span id="lblProfRole-badge" style="background: var(--maroon-soft); color: var(--maroon); font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 99px; border: 1px solid rgba(95,28,46,0.15);">STUDENT CREATOR & ARTISAN</span>
+                  <span id="lblProfRating-badge" style="background: var(--teal-bg); color: var(--teal-txt); font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 99px;">★ 4.9 (38 Reviews)</span>
+                </div>
+              </div>
+
+              <!-- bioCard_edge & bioCard: VerticalArrangement -->
+              <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 14px; margin-bottom: 14px;">
+                <div style="font-size: 10px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">ABOUT THIS CREATOR</div>
+                <p id="lblProfBio-display" style="font-size: 12px; color: var(--ink); line-height: 1.6; margin-bottom: 10px;">
+                  Digital illustrator, crochet hobbyist, and 3rd year IT student. Selling study notes, prints, and custom org stickers!
+                </p>
+                <div id="lblProfTags-display" style="font-size: 11px; font-weight: 700; color: var(--maroon);">
+                  #ArtPrints #Crochet #Stickers #StudyNotes #Commissions
+                </div>
+              </div>
+
+              <!-- Campus Contact & Trust Card -->
+              <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border); font-size: 11px;">
+                  <span style="color: var(--ink-muted); font-weight: 700;">Campus / Meetup:</span>
+                  <span id="lblProfAddress-display" style="color: var(--ink); font-weight: 800;">PSU Main Campus / AS Lobby</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 8px; font-size: 11px;">
+                  <span style="color: var(--ink-muted); font-weight: 700;">Verified Phone / GCash:</span>
+                  <span id="lblProfPhone-display" style="color: var(--ink); font-weight: 800;">0917-555-8921 (Verified)</span>
+                </div>
+              </div>
+
+              <!-- Native AI2 Action Buttons from UserProfile.scm -->
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
+                <button id="btnMessageUser" class="ai2-btn-secondary" onclick="navigateToScreen('Inbox')">
+                  💬 Message Student Seller
+                </button>
+                <button id="btnCommissionUser" class="ai2-btn-secondary" onclick="navigateToScreen('CommissionRequest')">
+                  🎨 Request a Custom Commission
+                </button>
+                <button id="btnEditProfile" class="ai2-btn-primary" onclick="toggleProfEdit(true)">
+                  ✏️ Edit My Profile
+                </button>
+                <button id="btnSettingsView" class="ai2-btn-secondary" onclick="navigateToScreen('Settings')">
+                  ⚙️ Account & Safety Settings
+                </button>
+                <button id="btnSignOutView" onclick="navigateToScreen('Screen1')" style="width: 100%; background: none; border: 1px solid #DC2626; color: #DC2626; padding: 10px; border-radius: var(--radius-rounded); font-size: 12px; font-weight: 800; cursor: pointer;">
+                  🚪 Sign Out of Account
+                </button>
+              </div>
+
+              <!-- Maya's Active Listings Grid -->
+              <div class="ai2-section-label">Maya's Current Listings on Campus</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div onclick="selectListing('list-1')" style="background: var(--card-white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer;">
+                  <img src="assets/l1.png" style="width: 100%; height: 95px; object-fit: cover;">
+                  <div style="padding: 6px 8px;">
+                    <div style="font-size: 12px; font-weight: 800; color: var(--maroon);">₱350</div>
+                    <div style="font-size: 10px; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ghibli Sunset Print</div>
+                  </div>
+                </div>
+
+                <div onclick="selectListing('list-4')" style="background: var(--card-white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer;">
+                  <img src="assets/l4.png" style="width: 100%; height: 95px; object-fit: cover;">
+                  <div style="padding: 6px 8px;">
+                    <div style="font-size: 12px; font-weight: 800; color: var(--maroon);">₱550</div>
+                    <div style="font-size: 10px; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Chibi Avatar Slot</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STATE 2: profEdit (VerticalArrangement) - Native Inline Edit Form -->
+            <div id="ai2-profEdit" style="display: none;">
+              <span class="blueprint-tag">VerticalArrangement: profEdit</span>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <h3 style="font-size: 15px; font-weight: 800; color: var(--maroon);">Edit Student Profile</h3>
+                <button onclick="toggleProfEdit(false)" class="ai2-btn-back" title="Cancel edit">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                </button>
+              </div>
+
+              <!-- Avatar Picker (HA_avatarChoice: HorizontalScrollArrangement) -->
+              <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 14px; text-align: center;">
+                <div style="font-size: 10px; font-weight: 800; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 8px;">CHOOSE AN AVATAR</div>
+                <img id="edit-avatar-preview" src="assets/av_maya.png" style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--maroon); object-fit: cover; margin-bottom: 8px;">
+                
+                <div style="display: flex; gap: 8px; overflow-x: auto; padding: 4px 0; justify-content: center;">
+                  <img src="assets/av_maya.png" onclick="chooseAvatarImg('assets/av_maya.png')" class="edit-av-choice active" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid var(--maroon); padding: 1px;">
+                  <img src="assets/av_liam.png" onclick="chooseAvatarImg('assets/av_liam.png')" class="edit-av-choice" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); padding: 1px;">
+                  <img src="assets/av_chloe.png" onclick="chooseAvatarImg('assets/av_chloe.png')" class="edit-av-choice" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); padding: 1px;">
+                  <img src="assets/avatar.png" onclick="chooseAvatarImg('assets/avatar.png')" class="edit-av-choice" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); padding: 1px;">
+                  <img src="assets/boy.png" onclick="chooseAvatarImg('assets/boy.png')" class="edit-av-choice" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); padding: 1px;">
+                  <img src="assets/woman.png" onclick="chooseAvatarImg('assets/woman.png')" class="edit-av-choice" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); padding: 1px;">
+                </div>
+              </div>
+
+              <!-- Inputs matching UserProfile.scm -->
+              <div class="ai2-section-label">FULL NAME</div>
+              <div class="ai2-input-wrap">
+                <input type="text" id="txtfullname-input" value="Maya Lin">
+              </div>
+
+              <div class="ai2-section-label">SCHOOL / COLLEGE</div>
+              <div class="ai2-input-wrap">
+                <input type="text" id="txtschool-input" value="Pangasinan State University · BS Information Technology">
+              </div>
+
+              <!-- profTwo: 2-column for Address & Phone -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div>
+                  <div class="ai2-section-label">CAMPUS ADDRESS</div>
+                  <div class="ai2-input-wrap">
+                    <input type="text" id="txtaddress-input" value="PSU Main Campus / AS Lobby">
+                  </div>
+                </div>
+                <div>
+                  <div class="ai2-section-label">PHONE NUMBER</div>
+                  <div class="ai2-input-wrap">
+                    <input type="text" id="txtphonenumber-input" value="0917-555-8921">
+                  </div>
+                </div>
+              </div>
+
+              <div class="ai2-section-label">CAMPUS EMAIL</div>
+              <div class="ai2-input-wrap">
+                <input type="email" id="txtemail-input" value="maya.lin@psu.edu.ph">
+              </div>
+
+              <div class="ai2-section-label">BIO & CREATOR NOTE</div>
+              <div class="ai2-input-wrap" style="height: auto;">
+                <textarea id="txtbio-input" rows="3">Digital illustrator, crochet hobbyist, and 3rd year IT student. Selling study notes, prints, and custom org stickers!</textarea>
+              </div>
+
+              <!-- Buttons matching UserProfile.scm: btnsaveprofile + btnCancelEdit -->
+              <div style="display: flex; gap: 8px; margin-top: 14px;">
+                <button class="ai2-btn-secondary" onclick="toggleProfEdit(false)" style="flex: 1;">
+                  Cancel
+                </button>
+                <button class="ai2-btn-primary" onclick="saveProfileChanges()" style="flex: 1;">
+                  Save Changes
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 10: Settings (Preferences & Security)                     -->
+        <!-- ================================================================= -->
+        <div class="screen-scroll-view" id="screen-view-Settings">
+          <span class="blueprint-tag" style="top:4px; left:4px;">VerticalScrollArrangement: stScroll</span>
+          
+          <div class="ai2-screen-bar">
+            <button class="ai2-btn-back" onclick="navigateToScreen('UserProfile')" title="Back to User Profile">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <span class="ai2-bar-title">Settings & Safety</span>
+            <span></span>
+          </div>
+
+          <div style="padding: 16px 18px;">
+            <div class="ai2-section-label">Campus Account & Security</div>
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border);">
+                <div>
+                  <div style="font-size: 12px; font-weight: 800; color: var(--ink);">PSU Institutional Email</div>
+                  <div style="font-size: 10px; color: var(--teal-txt); font-weight: 700;">maya.lin@psu.edu.ph (Verified)</div>
+                </div>
+                <span style="font-size: 16px;">🔒</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px;">
+                <div>
+                  <div style="font-size: 12px; font-weight: 800; color: var(--ink);">Campus Student ID</div>
+                  <div style="font-size: 10px; color: var(--ink-muted);">ID Verified for Semester 2026-2027</div>
+                </div>
+                <span style="font-size: 16px;">🪪</span>
+              </div>
+            </div>
+
+            <div class="ai2-section-label">Appearance & Display</div>
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-size: 12px; font-weight: 800; color: var(--ink);">Theme Mode</div>
+                <div style="font-size: 10px; color: var(--ink-muted);">Modern Light Paper ground vs Obsidian Charcoal Dark</div>
+              </div>
+              <button onclick="toggleTheme()" style="background: var(--maroon-soft); border: 1px solid rgba(95,28,46,0.2); color: var(--maroon); font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 6px; cursor: pointer;">
+                Toggle Theme
+              </button>
+            </div>
+
+            <div class="ai2-section-label">Campus Safety & Policies</div>
+            <div style="background: var(--card-white); border: 1px solid var(--border); border-radius: var(--radius-rounded); padding: 12px; margin-bottom: 20px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--ink); margin-bottom: 6px;">• Authorized Meetup Zones: Library, Pavilion, AS Lobby</div>
+              <div style="font-size: 11px; font-weight: 700; color: var(--ink); margin-bottom: 6px;">• Buyer Protection & Counterfeit Reporting</div>
+              <div style="font-size: 11px; font-weight: 700; color: var(--ink);">• Terms of Campus Marketplace Service</div>
+            </div>
+
+            <!-- Log Out Button -->
+            <button onclick="navigateToScreen('Screen1')" style="width: 100%; background: #DC2626; color: #FFFFFF; border: none; padding: 12px; border-radius: var(--radius-rounded); font-size: 12px; font-weight: 800; cursor: pointer;">
+              Sign Out of Linkhain
+            </button>
+          </div>
+        </div>
+
+        <!-- 5-Tab Navigation Bar with CENTER PLUS BUTTON (NO 'SELL' TEXT) -->
+        <nav class="ai2-nav-bar" id="app-bottom-navbar">
+          <span class="blueprint-tag" style="top:-14px; left:8px;">HorizontalArrangement: navBar</span>
+          
+          <div class="ai2-nav-tile active" id="nav-tab-market" onclick="navigateToScreen('Dashboard')">
+            <img src="assets/ic_shoppingbag_slate.png" alt="Market">
+            <span>Market</span>
+          </div>
+
+          <div class="ai2-nav-tile" id="nav-tab-messages" onclick="navigateToScreen('Inbox')">
+            <img src="assets/ic_messagesquare_slate.png" alt="Messages">
+            <span>Messages</span>
+          </div>
+
+          <!-- CENTER BUTTON: PLUS SIGN ONLY (NO "SELL" TEXT) -->
+          <div class="ai2-nav-plus-btn" onclick="navigateToScreen('CampusMarkterPlace')" title="Post New Item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+
+          <div class="ai2-nav-tile" id="nav-tab-stats" onclick="navigateToScreen('StudentDashboard')">
+            <img src="assets/ic_layoutdashboard_slate.png" alt="Stats">
+            <span>Stats</span>
+          </div>
+
+          <div class="ai2-nav-tile" id="nav-tab-profile" onclick="navigateToScreen('UserProfile')">
+            <img src="assets/ic_userround_slate.png" alt="Profile">
+            <span>Profile</span>
+          </div>
+        </nav>
+
+        <!-- Cart Drawer Modal Overlay -->
+        <div id="cart-drawer-modal" class="modal-overlay" onclick="closeCartModal()">
+          <div class="modal-sheet" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="font-size: 14px; font-weight: 800; color: var(--maroon);">Campus Meetup Cart</h3>
+              <button onclick="closeCartModal()" style="background: none; border: none; font-size: 16px; font-weight: 700; cursor: pointer; color: var(--ink);">✕</button>
+            </div>
+
+            <div id="cart-items-container" style="max-height: 220px; overflow-y: auto; margin-bottom: 12px;">
+              <!-- Cart items -->
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-top: 1px solid var(--border); margin-bottom: 12px;">
+              <span style="font-size: 12px; font-weight: 700;">Total Amount:</span>
+              <span id="cart-total-text" style="font-size: 17px; font-weight: 800; color: var(--maroon);">₱0</span>
+            </div>
+
+            <button onclick="checkoutCart()" class="ai2-btn-primary">
+              Confirm Campus Meetup Reservation
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mode 4: All Screens Gallery View (Bird's Eye Multi-Screen Overview) -->
+    <div class="gallery-view-grid" id="viewport-gallery">
+      <!-- 10 Responsive Preview Cards generated by JavaScript -->
+    </div>
+
+  </main>
+
+  <!-- Global Toast Notification -->
+  <div id="toast" class="toast-box"></div>
+
+  <!-- Interactive Logic Script -->
+  <script>
+    // Master listings data
+    const listings = [{"id": "list-1", "sellerId": "user-maya", "title": "Ghibli-Style Campus Sunset Art Print (A4 Matte Finish)", "type": "prints", "pricePhp": 350, "category": "Art Prints", "condition": "Brand New", "meetUpLocation": "UP Sunken Garden / AS Lobby", "favoriteCount": 24, "local_img": "assets/l1.png", "seller_name": "Maya Lin", "seller_avatar": "assets/av_maya.png", "createdAt": "2026-09-12T14:30:00Z", "description": "High-quality 300gsm archival matte print inspired by late afternoon sunsets over university old acacia trees. Comes with protective sleeve and cardboard backing. Perfect for dorm study tables!"}, {"id": "list-2", "sellerId": "user-liam", "title": "Handmade Chunky Matcha Green Frog Crochet Plushie", "type": "crafts", "pricePhp": 480, "category": "Handmade Crafts", "condition": "Handmade", "meetUpLocation": "DLSU Henry Sy Grounds", "favoriteCount": 39, "local_img": "assets/l2.png", "seller_name": "Liam Torres", "seller_avatar": "assets/av_liam.png", "createdAt": "2026-09-14T10:15:00Z", "description": "Crocheted using super soft milk cotton yarn. Stuffed with hypoallergenic polyester fiberfill with safety bead eyes. Measures approx 5 inches tall. Great study buddy or gift for friends!"}, {"id": "list-3", "sellerId": "user-chloe", "title": "Casio fx-991EX ClassWiz Scientific Calculator (Original)", "type": "preloved", "pricePhp": 850, "category": "Study & Tech", "condition": "Like New", "meetUpLocation": "Ateneo Gonzaga Hall / Katipunan Cafes", "favoriteCount": 18, "local_img": "assets/l3.png", "seller_name": "Chloe Santos", "seller_avatar": "assets/av_chloe.png", "createdAt": "2026-09-13T08:20:00Z", "description": "Used for 1 calculus semester only. Crisp dot-matrix screen with dual solar & battery power. Complete with slide-on hard case and quick reference sticker. 100% authentic."}, {"id": "list-4", "sellerId": "user-maya", "title": "Custom Digital Chibi Portrait Commission Slot (Personal Use)", "type": "art", "pricePhp": 550, "category": "Digital Art", "condition": "Handmade", "meetUpLocation": "Digital Delivery (High-Res Drive Link)", "favoriteCount": 45, "local_img": "assets/l4.png", "seller_name": "Maya Lin", "seller_avatar": "assets/av_maya.png", "createdAt": "2026-09-15T11:00:00Z", "description": "Commission slot for 1 full-color chibi avatar of yourself, your pet, or favorite game character. Includes 2 revision rounds, transparent PNG, and 300 DPI high-res print file. Turnaround: 3-5 days."}, {"id": "list-5", "sellerId": "user-chloe", "title": "Vintage Oversized Corduroy Utility Jacket (Warm Caramel)", "type": "preloved", "pricePhp": 520, "category": "Campus Apparel", "condition": "Good", "meetUpLocation": "UP Town Center / Katipunan", "favoriteCount": 14, "local_img": "assets/l5.png", "seller_name": "Chloe Santos", "seller_avatar": "assets/av_chloe.png", "createdAt": "2026-09-11T16:45:00Z", "description": "Thrifted from Japan. High-grade corduroy fabric with brass snap buttons and 4 functional front pockets. Unisex fit, best for Medium to Large. Washed and sanitized ready to wear."}, {"id": "list-6", "sellerId": "user-liam", "title": "Hand-Tufted Daisy Flower Mug Rug Coasters (Set of 2)", "type": "crafts", "pricePhp": 380, "category": "Home & Dorm", "condition": "Handmade", "meetUpLocation": "DLSU Taft Gate 1", "favoriteCount": 29, "local_img": "assets/l6.png", "seller_name": "Liam Torres", "seller_avatar": "assets/av_liam.png", "createdAt": "2026-09-10T09:10:00Z", "description": "Plush tufted coasters with non-slip felt backing. Absorbs condensation well and looks super cute under iced coffees and matcha lattes on your study desk. Dimensions: 12cm across."}, {"id": "list-7", "sellerId": "user-maya", "title": "Aesthetic Academic Notion & Figma Pitch Deck Template Kit", "type": "services", "pricePhp": 250, "category": "Design Services", "condition": "Brand New", "meetUpLocation": "Instant Figma / Canva Link Transfer", "favoriteCount": 52, "local_img": "assets/l7.png", "seller_name": "Maya Lin", "seller_avatar": "assets/av_maya.png", "createdAt": "2026-09-09T13:00:00Z", "description": "Designed specifically for student organizations, case competitions, and thesis presentations. Contains 35+ minimalist slide layouts, custom charts, color schemes, and user guide."}, {"id": "list-8", "sellerId": "user-liam", "title": "Custom Artisan Boba Tea Resin Mechanical Keycap (MX Stem)", "type": "crafts", "pricePhp": 620, "category": "Desk Accessories", "condition": "Handmade", "meetUpLocation": "Vito Cruz LRT / Taft", "favoriteCount": 33, "local_img": "assets/l8.png", "seller_name": "Liam Torres", "seller_avatar": "assets/av_liam.png", "createdAt": "2026-09-08T18:20:00Z", "description": "Hand-cast UV resin keycap with miniature brown sugar boba pearls and tiny straw detail. Tested on Cherry, Gateron, and Outemu switches. Packaged in a cushioned mini gift box."}];
+
+    let currentCategory = 'All Categories';
+    let currentSort = 'Newest';
+    let currentActiveScreen = 'Dashboard';
+    let cart = [];
+    let chosenAvatar = 'assets/av_maya.png';
+
+    // Screen metadata for the 10 screens
+    const screensMeta = [
+      { id: "Screen1", num: 1, name: "Screen1 (Auth)", desc: "Campus Login, Register & Google SSO", compCount: 134 },
+      { id: "Screen2", num: 2, name: "Screen2 (Roles)", desc: "Onboarding & Student Role Selection", compCount: 101 },
+      { id: "Dashboard", num: 3, name: "Dashboard (Market)", desc: "Marketplace Feed, Chips & Cart", compCount: 564 },
+      { id: "ListingDetail", num: 4, name: "ListingDetail", desc: "Product Inspection & Direct Offer", compCount: 50 },
+      { id: "CampusMarkterPlace", num: 5, name: "CampusMarkterPlace (Sell)", desc: "Post New Item Form & Camera Picker", compCount: 54 },
+      { id: "CommissionRequest", num: 6, name: "CommissionRequest", desc: "Custom Art Brief & Budget Form", compCount: 64 },
+      { id: "Inbox", num: 7, name: "Inbox (Chat)", desc: "Conversations & Live Meetup Chat", compCount: 18 },
+      { id: "StudentDashboard", num: 8, name: "StudentDashboard", desc: "Seller Hub & Meetup Analytics", compCount: 42 },
+      { id: "UserProfile", num: 9, name: "UserProfile", desc: "Student Bio, Reviews & Edit Modal", compCount: 135 },
+      { id: "Settings", num: 10, name: "Settings", desc: "Campus Security, Theme & Logout", compCount: 35 }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      filterDashboardFeed();
+      buildGalleryCards();
+      navigateToScreen('Dashboard');
+    });
+
+    // Navigation function
+    function navigateToScreen(screenId) {
+      currentActiveScreen = screenId;
+
+      // Update pills
+      document.querySelectorAll('.screen-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-target') === screenId);
+      });
+
+      // Update screen views
+      document.querySelectorAll('.screen-scroll-view').forEach(view => {
+        view.classList.remove('active');
+      });
+      const activeView = document.getElementById('screen-view-' + screenId);
+      if (activeView) {
+        activeView.classList.add('active');
+        activeView.scrollTop = 0;
+      }
+
+      // Update bottom nav active state
+      document.querySelectorAll('.ai2-nav-tile').forEach(tile => tile.classList.remove('active'));
+      if (screenId === 'Dashboard') document.getElementById('nav-tab-market')?.classList.add('active');
+      if (screenId === 'Inbox') document.getElementById('nav-tab-messages')?.classList.add('active');
+      if (screenId === 'StudentDashboard') document.getElementById('nav-tab-stats')?.classList.add('active');
+      if (screenId === 'UserProfile') document.getElementById('nav-tab-profile')?.classList.add('active');
+
+      if (document.getElementById('viewport-gallery').classList.contains('active')) {
+        setViewMode('phone');
+      }
+    }
+
+    // View Mode Switcher: phone, tablet, fluid, gallery
+    function setViewMode(mode) {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-view-' + mode)?.classList.add('active');
+
+      const singleContainer = document.getElementById('viewport-single');
+      const galleryContainer = document.getElementById('viewport-gallery');
+      const frame = document.getElementById('simulator-frame');
+
+      if (mode === 'gallery') {
+        singleContainer.style.display = 'none';
+        galleryContainer.classList.add('active');
+      } else {
+        galleryContainer.classList.remove('active');
+        singleContainer.style.display = 'flex';
+        frame.className = 'simulator-frame mode-' + mode;
+      }
+    }
+
+    // Toggle Blueprint overlay mode
+    function toggleBlueprintMode() {
+      document.body.classList.toggle('blueprint-mode');
+      const isOn = document.body.classList.contains('blueprint-mode');
+      showToast(isOn ? '🔍 AI2 Blueprint Mode ON: Native component tags visible' : 'Blueprint Mode OFF');
+    }
+
+    // Modern Dark / Light Theme Toggle
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      showToast(`Switched to ${next === 'dark' ? 'Obsidian Dark' : 'Warm Paper Light'} theme`);
+    }
+
+    // Auth Screen Handlers
+    function setAuthTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('btn-auth-login').style.background = isLogin ? 'var(--card-white)' : 'transparent';
+      document.getElementById('btn-auth-login').style.color = isLogin ? 'var(--maroon)' : 'var(--ink-muted)';
+      document.getElementById('btn-auth-register').style.background = !isLogin ? 'var(--card-white)' : 'transparent';
+      document.getElementById('btn-auth-register').style.color = !isLogin ? 'var(--maroon)' : 'var(--ink-muted)';
+      document.getElementById('auth-register-fields').style.display = isLogin ? 'none' : 'block';
+    }
+
+    function simulateAuthSuccess() {
+      showToast('✓ Verified as Jose Keneth Manalo (PSU Student)');
+      setTimeout(() => navigateToScreen('Dashboard'), 600);
+    }
+
+    function selectOnboardRole(el) {
+      document.querySelectorAll('.ai2-role-box').forEach(b => {
+        b.style.border = '1px solid var(--border)';
+        b.querySelector('div div:first-child').style.color = 'var(--ink)';
+      });
+      el.style.border = '2px solid var(--maroon)';
+      el.querySelector('div div:first-child').style.color = 'var(--maroon)';
+      showToast('Role selected! Click "Enter Marketplace Feed" to proceed.');
+    }
+
+    // Dashboard Feed Logic with Category & Price Sorting (sprSort)
+    function setDashboardCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.ai2-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterDashboardFeed();
+    }
+
+    function filterDashboardFeed() {
+      const query = (document.getElementById('dashboard-search-input')?.value || '').toLowerCase().trim();
+      currentSort = document.getElementById('dashboard-sort-select')?.value || 'Newest';
+
+      let filtered = listings.filter(item => {
+        if (currentCategory === 'My Listings') {
+          if (item.sellerId !== 'user-maya') return false;
+        } else if (currentCategory !== 'All Categories') {
+          if (item.category !== currentCategory) return false;
+        }
+
+        if (query) {
+          const t = (item.title || '').toLowerCase();
+          const d = (item.description || '').toLowerCase();
+          const s = (item.seller_name || '').toLowerCase();
+          const c = (item.category || '').toLowerCase();
+          if (!t.includes(query) && !d.includes(query) && !s.includes(query) && !c.includes(query)) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      // Price / Recency Sorting (matching sprSort in Dashboard.bky)
+      if (currentSort === 'PriceLow') {
+        filtered.sort((a, b) => a.pricePhp - b.pricePhp);
+      } else if (currentSort === 'PriceHigh') {
+        filtered.sort((a, b) => b.pricePhp - a.pricePhp);
+      } else {
+        // Newest / Default
+        filtered.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+      }
+
+      renderDashboardGrid(filtered);
+    }
+
+    function renderDashboardGrid(items) {
+      const grid = document.getElementById('dashboard-feed-grid');
+      const countLabel = document.getElementById('dashboard-count-label');
+      if (countLabel) countLabel.textContent = `${items.length} Campus Listings Available`;
+
+      if (!grid) return;
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: span 2; text-align: center; padding: 40px 10px; color: var(--ink-muted);">
+            <div style="font-size: 26px; margin-bottom: 6px;">🔍</div>
+            <div style="font-weight: 800; color: var(--ink);">No campus items found</div>
+            <div style="font-size: 11px;">Try searching for another keyword or selecting All Categories</div>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = items.map(item => `
+        <div onclick="selectListing('${item.id}')" style="background: var(--border); padding: 1px; border-radius: var(--radius-rounded); cursor: pointer; transition: transform 0.15s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+          <span class="blueprint-tag">cardEdge / cardCol</span>
+          <div style="background: var(--card-white); border-radius: var(--radius-rounded); overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+            <div style="width: 100%; height: 120px; background: #111; position: relative;">
+              <img src="${item.local_img}" onerror="this.src='assets/logo_header.png'" style="width: 100%; height: 100%; object-fit: cover;">
+              <span style="position: absolute; top: 6px; left: 6px; background: rgba(36,24,32,0.8); color: #FFF; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px;">${item.condition || 'Verified'}</span>
+            </div>
+            <div style="padding: 8px 10px 10px 10px; display: flex; flex-direction: column; flex: 1;">
+              <div style="font-size: 15px; font-weight: 800; color: var(--maroon); margin-bottom: 2px;">₱${item.pricePhp}</div>
+              <div style="font-size: 11px; font-weight: 700; color: var(--ink); line-height: 1.35; margin-bottom: 6px; height: 30px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${item.title}</div>
+              <div style="display: flex; align-items: center; gap: 5px; margin-top: auto; font-size: 10px; color: var(--ink-muted);">
+                <img src="${item.seller_avatar}" onerror="this.src='assets/avatar.png'" style="width: 16px; height: 16px; border-radius: 50%; object-fit: cover;">
+                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 65px;">${item.seller_name}</span>
+                <button onclick="event.stopPropagation(); addItemToCart('${item.id}')" style="background: var(--maroon-soft); border: 1px solid rgba(95,28,46,0.15); color: var(--maroon); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; margin-left: auto; cursor: pointer;">+ Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Select Listing & Open ListingDetail
+    let currentDetailItem = listings[0];
+    function selectListing(id) {
+      const item = listings.find(l => l.id === id);
+      if (!item) return;
+      currentDetailItem = item;
+
+      document.getElementById('detail-bar-title').textContent = item.title.substring(0, 18) + '...';
+      document.getElementById('detail-main-img').src = item.local_img;
+      document.getElementById('detail-price-text').textContent = '₱' + item.pricePhp;
+      document.getElementById('detail-title-text').textContent = item.title;
+      document.getElementById('detail-category-badge').textContent = item.category;
+      document.getElementById('detail-condition-tag').textContent = item.condition || 'Verified';
+      document.getElementById('detail-meetup-text').textContent = item.meetUpLocation || 'PSU Main Gate / AS Lobby';
+      document.getElementById('detail-seller-name').textContent = item.seller_name;
+      document.getElementById('detail-seller-av').src = item.seller_avatar;
+      document.getElementById('detail-desc-text').textContent = item.description;
+
+      navigateToScreen('ListingDetail');
+    }
+
+    // Cart Management
+    function addItemToCart(id) {
+      const item = listings.find(l => l.id === id);
+      if (!item) return;
+      cart.push(item);
+      updateCartDisplay();
+      showToast(`🛒 Added "${item.title.substring(0, 20)}..." to Campus Cart`);
+    }
+
+    function addCurrentItemToCart() {
+      if (currentDetailItem) {
+        addItemToCart(currentDetailItem.id);
+        openCartModal();
+      }
+    }
+
+    function updateCartDisplay() {
+      const badge = document.getElementById('cart-counter-text');
+      if (badge) badge.textContent = `Cart (${cart.length})`;
+
+      const list = document.getElementById('cart-items-container');
+      const totalEl = document.getElementById('cart-total-text');
+      if (!list) return;
+
+      if (cart.length === 0) {
+        list.innerHTML = `<div style="text-align: center; padding: 20px; color: var(--ink-muted); font-size: 12px;">Your Campus Meetup Cart is empty.</div>`;
+        if (totalEl) totalEl.textContent = '₱0';
+        return;
+      }
+
+      let total = 0;
+      list.innerHTML = cart.map((item, idx) => {
+        total += item.pricePhp;
+        return `
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="${item.local_img}" onerror="this.src='assets/logo_header.png'" style="width: 32px; height: 32px; border-radius: 4px; object-fit: cover;">
+              <div>
+                <div style="font-size: 11px; font-weight: 700; color: var(--ink);">${item.title.substring(0, 22)}...</div>
+                <div style="font-size: 10px; color: var(--maroon); font-weight: 800;">₱${item.pricePhp}</div>
+              </div>
+            </div>
+            <button onclick="removeCartItem(${idx})" style="background: none; border: none; color: #DC2626; font-size: 14px; cursor: pointer; padding: 4px;">✕</button>
+          </div>
+        `;
+      }).join('');
+
+      if (totalEl) totalEl.textContent = '₱' + total;
+    }
+
+    function removeCartItem(idx) {
+      cart.splice(idx, 1);
+      updateCartDisplay();
+    }
+
+    function openCartModal() {
+      updateCartDisplay();
+      document.getElementById('cart-drawer-modal').classList.add('open');
+    }
+
+    function closeCartModal() {
+      document.getElementById('cart-drawer-modal').classList.remove('open');
+    }
+
+    function checkoutCart() {
+      if (cart.length === 0) {
+        showToast('Your cart is empty!');
+        return;
+      }
+      closeCartModal();
+      showToast(`🎉 Campus Meetup order reserved for ${cart.length} item(s)! Check Messages to coordinate.`);
+      cart = [];
+      updateCartDisplay();
+      setTimeout(() => navigateToScreen('Inbox'), 800);
+    }
+
+    // Publish New Listing Form
+    function simulatePhotoPick() {
+      showToast('📷 Photo chosen: "assets/l2.png" (Crochet item)');
+      document.getElementById('sell-photo-preview').src = 'assets/l2.png';
+    }
+
+    function publishNewListing() {
+      const title = document.getElementById('sell-input-title')?.value.trim();
+      const price = parseFloat(document.getElementById('sell-input-price')?.value) || 0;
+      const cat = document.getElementById('sell-input-cat')?.value || 'Handmade Crafts';
+      const cond = document.getElementById('sell-input-cond')?.value || 'Handmade';
+      const loc = document.getElementById('sell-input-location')?.value || 'PSU Main Gate';
+      const desc = document.getElementById('sell-input-desc')?.value || '';
+
+      if (!title || price <= 0) {
+        showToast('⚠️ Please enter an item title and valid price!');
+        return;
+      }
+
+      const newListing = {
+        id: 'list-custom-' + Date.now(),
+        sellerId: 'user-ken',
+        title: title,
+        type: 'crafts',
+        pricePhp: price,
+        category: cat,
+        condition: cond,
+        meetUpLocation: loc,
+        favoriteCount: 1,
+        local_img: 'assets/l2.png',
+        seller_name: 'Jose Keneth',
+        seller_avatar: 'assets/avatar.png',
+        createdAt: new Date().toISOString(),
+        description: desc || 'Item published via Linkhain Student Seller Hub.'
+      };
+
+      listings.unshift(newListing);
+      filterDashboardFeed();
+      showToast('✓ Successfully published to Campus Marketplace!');
+      navigateToScreen('Dashboard');
+    }
+
+    // Commission Request
+    function submitCommissionRequest() {
+      const title = document.getElementById('comm-input-title')?.value;
+      const budget = document.getElementById('comm-input-budget')?.value;
+      showToast(`🎨 Commission brief "${title}" (₱${budget}) sent to Maya Lin!`);
+      setTimeout(() => navigateToScreen('Inbox'), 700);
+    }
+
+    // Live Chat Functions
+    function openConversation(userId) {
+      document.getElementById('inbox-threads-view').style.display = 'none';
+      document.getElementById('inbox-chat-view').style.display = 'flex';
+    }
+
+    function closeConversation() {
+      document.getElementById('inbox-chat-view').style.display = 'none';
+      document.getElementById('inbox-threads-view').style.display = 'block';
+    }
+
+    function openChatFromDetail() {
+      navigateToScreen('Inbox');
+      openConversation(currentDetailItem.sellerId);
+    }
+
+    function sendLiveChatMessage() {
+      const input = document.getElementById('live-chat-input');
+      const text = (input?.value || '').trim();
+      if (!text) return;
+
+      const container = document.getElementById('chat-messages-container');
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const msgEl = document.createElement('div');
+      msgEl.style.cssText = 'align-self: flex-end; max-width: 80%; background: var(--maroon); color: #FFF; padding: 9px 12px; border-radius: 12px; border-bottom-right-radius: 2px; font-size: 12px; line-height: 1.4;';
+      msgEl.innerHTML = `${text}<div style="font-size: 9px; color: rgba(255,255,255,0.7); text-align: right; margin-top: 3px;">${time}</div>`;
+      container.appendChild(msgEl);
+      container.scrollTop = container.scrollHeight;
+      input.value = '';
+
+      setTimeout(() => {
+        const replyEl = document.createElement('div');
+        replyEl.style.cssText = 'align-self: flex-start; max-width: 80%; background: var(--card-white); border: 1px solid var(--border); padding: 9px 12px; border-radius: 12px; border-bottom-left-radius: 2px; font-size: 12px; line-height: 1.4;';
+        replyEl.innerHTML = `Got it! I will be wearing a maroon lanyard. See you! 😊<div style="font-size: 9px; color: var(--ink-muted); text-align: right; margin-top: 3px;">Just now</div>`;
+        container.appendChild(replyEl);
+        container.scrollTop = container.scrollHeight;
+      }, 1000);
+    }
+
+    // USER PROFILE INLINE EDIT LOGIC (100% FAITHFUL TO UserProfile.bky)
+    function toggleProfEdit(showEdit) {
+      const viewSec = document.getElementById('ai2-profView');
+      const editSec = document.getElementById('ai2-profEdit');
+      const title = document.getElementById('prof-bar-title');
+
+      if (showEdit) {
+        viewSec.style.display = 'none';
+        editSec.style.display = 'block';
+        if (title) title.textContent = 'Edit Profile';
+      } else {
+        editSec.style.display = 'none';
+        viewSec.style.display = 'block';
+        if (title) title.textContent = 'Student Profile';
+      }
+    }
+
+    function chooseAvatarImg(path) {
+      chosenAvatar = path;
+      document.getElementById('edit-avatar-preview').src = path;
+      document.querySelectorAll('.edit-av-choice').forEach(el => {
+        el.style.border = el.getAttribute('src') === path ? '2px solid var(--maroon)' : '2px solid var(--border)';
+      });
+      showToast('Avatar selected!');
+    }
+
+    function saveProfileChanges() {
+      const name = document.getElementById('txtfullname-input')?.value || 'Maya Lin';
+      const school = document.getElementById('txtschool-input')?.value || 'Pangasinan State University';
+      const address = document.getElementById('txtaddress-input')?.value || 'PSU Main Campus';
+      const phone = document.getElementById('txtphonenumber-input')?.value || '0917-555-8921';
+      const bio = document.getElementById('txtbio-input')?.value || '';
+
+      // Update profView
+      document.getElementById('lblProfName-display').textContent = name;
+      document.getElementById('lblProfSchool-display').textContent = school;
+      document.getElementById('lblProfAddress-display').textContent = address;
+      document.getElementById('lblProfPhone-display').textContent = phone;
+      document.getElementById('lblProfBio-display').textContent = bio;
+      document.getElementById('main-avatar-img').src = chosenAvatar;
+
+      toggleProfEdit(false);
+      showToast('✓ Profile saved successfully!');
+    }
+
+    // Build All Screens Gallery Grid
+    function buildGalleryCards() {
+      const grid = document.getElementById('viewport-gallery');
+      if (!grid) return;
+
+      const screenPreviews = {
+        Screen1: { icon: "🔐", badge: "Auth" },
+        Screen2: { icon: "👋", badge: "Onboarding" },
+        Dashboard: { icon: "🛍️", badge: "Market" },
+        ListingDetail: { icon: "🔍", badge: "Inspect" },
+        CampusMarkterPlace: { icon: "➕", badge: "Sell" },
+        CommissionRequest: { icon: "🎨", badge: "Custom" },
+        Inbox: { icon: "💬", badge: "Chat" },
+        StudentDashboard: { icon: "📊", badge: "Stats" },
+        UserProfile: { icon: "👤", badge: "Profile" },
+        Settings: { icon: "⚙️", badge: "Safety" }
+      };
+
+      grid.innerHTML = screensMeta.map(meta => `
+        <div class="gallery-card" onclick="zoomIntoScreen('${meta.id}')">
+          <div class="gallery-card-header">
+            <h3><span>${meta.num}.</span> ${meta.name}</h3>
+            <span class="tag">${meta.compCount} AI2 Comps</span>
+          </div>
+          <div class="gallery-card-preview" id="gallery-preview-${meta.id}">
+            <div style="padding: 24px 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--ground);">
+              <div style="font-size: 42px; margin-bottom: 10px;">${screenPreviews[meta.id]?.icon || '📱'}</div>
+              <div style="font-size: 15px; font-weight: 800; color: var(--maroon); margin-bottom: 4px;">${meta.name}</div>
+              <div style="font-size: 11px; color: var(--ink-muted); max-width: 240px; line-height: 1.4;">${meta.desc}</div>
+              <div style="margin-top: 14px; display: inline-flex; align-items: center; gap: 4px; background: var(--card-white); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: var(--teal-txt);">
+                ✓ 100% Native Feasible
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-footer">
+            <span>${meta.desc}</span>
+            <span class="btn-zoom-card">Zoom In →</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function zoomIntoScreen(screenId) {
+      setViewMode('phone');
+      navigateToScreen(screenId);
+    }
+
+    // Global Toast Notification
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
