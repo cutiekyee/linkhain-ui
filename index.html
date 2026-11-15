@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Linkhain · 10-Screen Responsive Prototype (100% MIT App Inventor Architecture)</title>
+  <title>Linkhain · Responsive UI and App Inventor References</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -125,6 +125,7 @@
     /* View Mode Switcher */
     .view-switcher {
       display: inline-flex;
+      flex-wrap: wrap;
       background: rgba(0,0,0,0.3);
       padding: 3px;
       border-radius: 8px;
@@ -826,6 +827,8 @@
 
     /* Actual Screenshot Container inside phone simulator */
     .actual-photo-overlay {
+      flex: 1;
+      min-height: 0;
       display: none;
       width: 100%;
       height: 100%;
@@ -840,22 +843,56 @@
       display: block;
       margin: 0 auto;
     }
-    .actual-photo-badge {
-      display: inline-block;
-      margin: 10px auto;
-      background: rgba(13, 148, 136, 0.2);
-      color: #2DD4BF;
-      border: 1px solid rgba(13, 148, 136, 0.4);
-      padding: 4px 12px;
-      border-radius: 99px;
-      font-size: 11px;
-      font-weight: 800;
+    .actual-photo-overlay img[hidden] {
+      display: none;
+    }
+    .source-reference-note {
+      padding: 12px 16px;
+      color: var(--ink-muted);
+      background: var(--card-white);
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+    .actual-photo-overlay .source-reference-note {
+      color: #FFFFFF;
+      background: #14171E;
+    }
+    .simulator-frame.showing-photo > .phone-status-bar,
+    .simulator-frame.showing-photo > .ai2-nav-bar {
+      display: none;
+    }
+    .source-auth-preview {
+      display: block;
+      width: 100%;
+      max-width: 1040px;
+      height: 80dvh;
+      min-height: 420px;
+      margin: 12px auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--ground);
+    }
+    .source-captures {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .source-captures img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
     }
 
     /* Side-by-Side Viewport */
     .side-by-side-viewport {
       display: none;
       max-width: 1300px;
+      width: 100%;
+      min-width: 0;
       margin: 0 auto;
       padding: 24px 16px;
       gap: 30px;
@@ -888,7 +925,7 @@
     }
     .sbs-dual-columns {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 24px;
       align-items: start;
     }
@@ -898,6 +935,7 @@
       }
     }
     .sbs-col {
+      min-width: 0;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -919,6 +957,7 @@
       background: #000;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       max-width: 380px;
+      width: 100%;
       margin: 0 auto;
     }
     .sbs-photo-frame img {
@@ -938,6 +977,7 @@
       background: var(--ground);
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       max-width: 380px;
+      width: 100%;
       margin: 0 auto;
       height: 720px;
       overflow-y: auto;
@@ -946,13 +986,15 @@
     /* Screenshots Gallery Viewport */
     .screenshots-gallery-viewport {
       display: none;
+      width: 100%;
+      min-width: 0;
       max-width: 1400px;
       margin: 0 auto;
       padding: 24px 16px;
     }
     .sg-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
       gap: 24px;
     }
     .sg-card {
@@ -1085,7 +1127,7 @@
       <div class="brand-box">
         <img src="assets/logo_mark.png" alt="Linkhain">
         <div>
-          <h1>Linkhain <span class="badge">100% MIT APP INVENTOR NATIVE</span></h1>
+          <h1>Linkhain <span class="badge">UI REFERENCE &amp; HTML PREVIEW</span></h1>
           <p style="font-size: 10px; color: #D8CCD1;">Responsive Architecture Viewer · Pangasinan State University</p>
         </div>
       </div>
@@ -1148,6 +1190,39 @@
     </nav>
   </header>
 
+  <aside class="source-reference-note">
+    Source project: <strong>LinkhainNewVer.aia</strong> (10 screen definitions inspected).
+    Screen2 is registration; its HTML role-picker preview is not the current app screen.
+    Screen1 and Screen2 include the packaged <code>auth_classic.html</code> WebViewer UI.
+    Interactive layouts are HTML previews, not an Android emulator or proof of native component fidelity.
+    Supplied photos are references; Settings and CommissionRequest have no matching capture.
+    <details id="actual-aia-ui">
+      <summary>Inspect the exact sign-in / registration HTML extracted from the AIA</summary>
+      <p>This is the unchanged packaged UI with its original fonts. Authentication requires the app's native bridge; this browser preview does not simulate successful login.</p>
+      <p><strong>Observed source limitation:</strong> outside App Inventor, tab changes and Google sign-in call the missing native bridge, then the source error handler targets a nonexistent element. The form panels render, but browser authentication is not functional. The extracted source is intentionally unchanged.</p>
+      <p><a href="assets/aia-source/auth_classic.html" target="_blank" rel="noopener">Open actual packaged UI at full browser width</a></p>
+      <iframe class="source-auth-preview" src="assets/aia-source/auth_classic.html" title="Actual LinkhainNewVer AIA authentication UI" loading="lazy"></iframe>
+    </details>
+    <details id="actual-aia-captures">
+      <summary>View fresh browser screenshots of the actual packaged UI</summary>
+      <p>Captured from the extracted file at 390px (mobile) and 1440px (desktop) viewport widths. These are browser renders, not Android device captures.</p>
+      <div class="source-captures">
+        <figure>
+          <a href="assets/screenshots/browser-aia-signin-mobile.png" target="_blank" rel="noopener"><img src="assets/screenshots/browser-aia-signin-mobile.png" alt="Actual packaged sign-in UI rendered at a 390px mobile viewport" loading="lazy"></a>
+          <figcaption>Actual AIA HTML · Sign-in · 390px viewport</figcaption>
+        </figure>
+        <figure>
+          <a href="assets/screenshots/browser-aia-register-mobile.png" target="_blank" rel="noopener"><img src="assets/screenshots/browser-aia-register-mobile.png" alt="Actual packaged registration UI rendered at a 390px mobile viewport" loading="lazy"></a>
+          <figcaption>Actual AIA HTML · Registration · 390px viewport</figcaption>
+        </figure>
+        <figure>
+          <a href="assets/screenshots/browser-aia-signin-desktop.png" target="_blank" rel="noopener"><img src="assets/screenshots/browser-aia-signin-desktop.png" alt="Actual packaged sign-in UI rendered at a 1440px desktop viewport" loading="lazy"></a>
+          <figcaption>Actual AIA HTML · Sign-in · 1440px viewport</figcaption>
+        </figure>
+      </div>
+    </details>
+  </aside>
+
   <!-- Main Responsive Workspace -->
   <main class="main-workspace">
 
@@ -1165,7 +1240,7 @@
         <!-- Device In-Frame Real Photo / AI2 Switcher -->
         <div class="frame-photo-toggle-bar">
           <button class="frame-toggle-btn active" id="btn-toggle-ai2" onclick="setFrameDisplayMode('ai2')">
-            📱 Interactive App Inventor UI
+            Interactive HTML Preview
           </button>
           <button class="frame-toggle-btn" id="btn-toggle-photo" onclick="setFrameDisplayMode('photo')">
             📸 Actual Phone Screenshot
@@ -1174,8 +1249,8 @@
 
         <!-- Real Screenshot Overlay Layer -->
         <div class="actual-photo-overlay" id="frame-actual-photo-layer">
-          <div class="actual-photo-badge">📸 High-Res Real Device Capture (Android)</div>
-          <img id="frame-photo-img" src="assets/screenshots/1.jpg" alt="Actual Phone Screenshot">
+          <p class="source-reference-note" id="frame-photo-caption" role="status"></p>
+          <img id="frame-photo-img" alt="" hidden>
         </div>
 
 
@@ -2092,7 +2167,7 @@
       <div style="text-align: center; margin-bottom: 20px;">
         <h2 style="font-size: 20px; font-weight: 800; color: var(--maroon);">Side-by-Side Fidelity Comparison</h2>
         <p style="font-size: 13px; color: var(--ink-muted); margin-top: 4px;">
-          Direct visual verification: Real Android device screenshot (left) vs MIT App Inventor architecture (right).
+          Supplied UI reference (left) vs interactive HTML interpretation (right). Differences are visible here, not evidence of an identical AIA build.
         </p>
       </div>
 
@@ -2107,7 +2182,7 @@
         </div>
         <div class="sbs-dual-columns">
           <div class="sbs-col">
-            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (1.jpg)</span><span style="font-size:10px;">1080×2400 Device</span></div>
+            <div class="sbs-col-label"><span>📸 Supplied Phone Screenshot (1.jpg)</span><span style="font-size:10px;">922×2048 Reference</span></div>
             <div class="sbs-photo-frame"><img src="assets/screenshots/1.jpg" onclick="openLightbox('assets/screenshots/1.jpg', 'Screen1 · Sign In (Actual Device Screenshot)')" alt="Screen1 actual screenshot"></div>
           </div>
           <div class="sbs-col">
@@ -2295,7 +2370,7 @@
       <div style="text-align: center; margin-bottom: 24px;">
         <h2 style="font-size: 22px; font-weight: 800; color: var(--maroon);">Actual Running Device Screenshots</h2>
         <p style="font-size: 13px; color: var(--ink-muted); margin-top: 4px;">
-          Captured live from the user's phone. Click any screenshot to open in high-resolution lightbox.
+          Supplied phone UI images. Click any screenshot to inspect the full-resolution reference; these are not fresh captures of the current AIA build.
         </p>
       </div>
 
@@ -2483,7 +2558,7 @@
       });
 
       // Update screen views
-      document.querySelectorAll('.screen-scroll-view').forEach(view => {
+      document.querySelectorAll('#simulator-frame > .screen-scroll-view').forEach(view => {
         view.classList.remove('active');
       });
       const activeView = document.getElementById('screen-view-' + screenId);
@@ -2947,9 +3022,7 @@
       'StudentDashboard': 'assets/screenshots/6.jpg',
       'UserProfile': 'assets/screenshots/7.jpg',
       'UserProfileEdit': 'assets/screenshots/8.jpg',
-      'ListingDetail': 'assets/screenshots/9.jpg',
-      'CommissionRequest': 'assets/screenshots/5.jpg',
-      'Settings': 'assets/screenshots/7.jpg'
+      'ListingDetail': 'assets/screenshots/9.jpg'
     };
 
     let currentFrameDisplayMode = 'ai2'; // 'ai2' or 'photo'
@@ -2960,22 +3033,34 @@
       const btnPhoto = document.getElementById('btn-toggle-photo');
       const photoLayer = document.getElementById('frame-actual-photo-layer');
       const photoImg = document.getElementById('frame-photo-img');
+      const photoCaption = document.getElementById('frame-photo-caption');
+      document.getElementById('simulator-frame').classList.toggle('showing-photo', mode === 'photo');
 
       if (mode === 'photo') {
         btnPhoto.classList.add('active');
         btnAi2.classList.remove('active');
-        const photoPath = SCREEN_PHOTOS[(typeof currentActiveScreen !== 'undefined' ? currentActiveScreen : 'Screen1')] || 'assets/screenshots/1.jpg';
-        photoImg.src = photoPath;
+        const photoPath = SCREEN_PHOTOS[currentActiveScreen];
+        photoImg.hidden = !photoPath;
+        if (photoPath) {
+          photoImg.src = photoPath;
+          photoImg.alt = currentActiveScreen + ' supplied UI screenshot';
+          photoCaption.textContent = currentActiveScreen + ' · Source: ' + photoPath +
+            '. Supplied reference image; not a fresh capture of the current AIA build.';
+        } else {
+          photoImg.removeAttribute('src');
+          photoImg.alt = '';
+          photoCaption.textContent = currentActiveScreen +
+            ' · No matching device screenshot is available. Switch to Interactive HTML Preview to inspect the proposed UI.';
+        }
         photoLayer.style.display = 'block';
         // Hide active scroll view temporarily
-        document.querySelectorAll('.screen-scroll-view').forEach(s => s.style.display = 'none');
+        document.querySelectorAll('#simulator-frame > .screen-scroll-view').forEach(s => s.style.display = 'none');
       } else {
         btnAi2.classList.add('active');
         btnPhoto.classList.remove('active');
         photoLayer.style.display = 'none';
         // Show current screen
-        const curEl = document.getElementById('screen-view-' + (typeof currentActiveScreen !== 'undefined' ? currentActiveScreen : 'Screen1'));
-        if (curEl) curEl.style.display = 'block';
+        document.querySelectorAll('#simulator-frame > .screen-scroll-view').forEach(s => s.style.removeProperty('display'));
       }
     }
 
@@ -3059,11 +3144,7 @@
     const origNav = window.navigateToScreen;
     window.navigateToScreen = function(screenName) {
       if (origNav) origNav(screenName);
-      if (currentFrameDisplayMode === 'photo') {
-        const photoPath = SCREEN_PHOTOS[screenName] || 'assets/screenshots/1.jpg';
-        const photoImg = document.getElementById('frame-photo-img');
-        if (photoImg) photoImg.src = photoPath;
-      }
+      setFrameDisplayMode(currentFrameDisplayMode);
     };
 
   </script>
