@@ -771,6 +771,310 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
+  
+    /* --- ACTUAL SCREENSHOTS & SIDE-BY-SIDE COMPARATOR STYLES --- */
+    .view-btn.actual-photo-btn {
+      background: rgba(204, 166, 104, 0.18);
+      color: var(--gold);
+      border: 1px solid rgba(204, 166, 104, 0.35);
+    }
+    .view-btn.actual-photo-btn:hover {
+      background: rgba(204, 166, 104, 0.3);
+    }
+    .view-btn.actual-photo-btn.active {
+      background: var(--gold);
+      color: #1A1105;
+      font-weight: 800;
+    }
+
+    /* In-Frame Photo Toggle Pill */
+    .frame-photo-toggle-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    [data-theme="dark"] .frame-photo-toggle-bar {
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .frame-toggle-btn {
+      border: none;
+      background: var(--input-bg);
+      color: var(--ink-muted);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .frame-toggle-btn.active {
+      background: var(--maroon);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(95, 28, 46, 0.3);
+    }
+
+    /* Actual Screenshot Container inside phone simulator */
+    .actual-photo-overlay {
+      display: none;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      text-align: center;
+      background: #000000;
+      animation: fadeIn 0.2s ease;
+    }
+    .actual-photo-overlay img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .actual-photo-badge {
+      display: inline-block;
+      margin: 10px auto;
+      background: rgba(13, 148, 136, 0.2);
+      color: #2DD4BF;
+      border: 1px solid rgba(13, 148, 136, 0.4);
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    /* Side-by-Side Viewport */
+    .side-by-side-viewport {
+      display: none;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      gap: 30px;
+      flex-direction: column;
+    }
+    .sbs-screen-card {
+      background: var(--card-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    .sbs-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .sbs-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--maroon);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sbs-dual-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .sbs-dual-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+    .sbs-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sbs-col-label {
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sbs-photo-frame {
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      max-width: 380px;
+      margin: 0 auto;
+    }
+    .sbs-photo-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    .sbs-photo-frame img:hover {
+      transform: scale(1.015);
+    }
+    .sbs-proto-frame {
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--ground);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      max-width: 380px;
+      margin: 0 auto;
+      height: 720px;
+      overflow-y: auto;
+    }
+
+    /* Screenshots Gallery Viewport */
+    .screenshots-gallery-viewport {
+      display: none;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+    .sg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .sg-card {
+      background: var(--card-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .sg-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    }
+    .sg-img-wrap {
+      background: #000000;
+      padding: 10px;
+      text-align: center;
+      cursor: zoom-in;
+      position: relative;
+    }
+    .sg-img-wrap img {
+      max-height: 440px;
+      width: auto;
+      max-width: 100%;
+      border-radius: 12px;
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .sg-card-info {
+      padding: 14px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .sg-card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--maroon);
+    }
+    .sg-card-sub {
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+    .sg-card-btn {
+      background: var(--maroon-soft);
+      color: var(--maroon);
+      border: 1px solid rgba(95, 28, 46, 0.2);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .sg-card-btn:hover {
+      background: var(--maroon);
+      color: #fff;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .lightbox-modal.active {
+      display: flex;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      text-align: center;
+    }
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .lightbox-caption {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -36px;
+      right: 0;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.4);
+    }
+
   </style>
 </head>
 <body>
@@ -793,6 +1097,8 @@
           <button class="view-btn" onclick="setViewMode('tablet')" id="btn-view-tablet">📟 Tablet</button>
           <button class="view-btn" onclick="setViewMode('fluid')" id="btn-view-fluid">💻 Fluid</button>
           <button class="view-btn" onclick="setViewMode('gallery')" id="btn-view-gallery">🗺️ All Screens</button>
+          <button class="view-btn actual-photo-btn" onclick="setViewMode('side-by-side')" id="btn-view-sbs">⚖️ Side-by-Side (Photo vs AI2)</button>
+          <button class="view-btn actual-photo-btn" onclick="setViewMode('photos')" id="btn-view-photos">📸 Real Phone Photos (9)</button>
         </div>
 
         <!-- AI2 Blueprint Overlay Toggle -->
@@ -855,6 +1161,23 @@
           <div class="dynamic-island"></div>
           <span>PSU 5G</span>
         </div>
+
+        <!-- Device In-Frame Real Photo / AI2 Switcher -->
+        <div class="frame-photo-toggle-bar">
+          <button class="frame-toggle-btn active" id="btn-toggle-ai2" onclick="setFrameDisplayMode('ai2')">
+            📱 Interactive App Inventor UI
+          </button>
+          <button class="frame-toggle-btn" id="btn-toggle-photo" onclick="setFrameDisplayMode('photo')">
+            📸 Actual Phone Screenshot
+          </button>
+        </div>
+
+        <!-- Real Screenshot Overlay Layer -->
+        <div class="actual-photo-overlay" id="frame-actual-photo-layer">
+          <div class="actual-photo-badge">📸 High-Res Real Device Capture (Android)</div>
+          <img id="frame-photo-img" src="assets/screenshots/1.jpg" alt="Actual Phone Screenshot">
+        </div>
+
 
         <!-- ================================================================= -->
         <!-- SCREEN 1: Screen1 (Auth / Welcome / Sign In / Register)           -->
@@ -1761,6 +2084,359 @@
       <!-- 10 Responsive Preview Cards generated by JavaScript -->
     </div>
 
+  
+    <!-- ================================================================= -->
+    <!-- VIEWPORT 3: Side-by-Side Comparator (Real Photo vs AI2 Layout)    -->
+    <!-- ================================================================= -->
+    <div class="side-by-side-viewport" id="viewport-side-by-side">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--maroon);">Side-by-Side Fidelity Comparison</h2>
+        <p style="font-size: 13px; color: var(--ink-muted); margin-top: 4px;">
+          Direct visual verification: Real Android device screenshot (left) vs MIT App Inventor architecture (right).
+        </p>
+      </div>
+
+      <!-- Item 1: Screen1 -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>Screen 1: Welcome & Student Sign In</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">Screen1.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('Screen1'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (1.jpg)</span><span style="font-size:10px;">1080×2400 Device</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/1.jpg" onclick="openLightbox('assets/screenshots/1.jpg', 'Screen1 · Sign In (Actual Device Screenshot)')" alt="Screen1 actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>100% Native Blocks</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-Screen1">
+              <!-- Replicated view will be synced -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2: Screen2 -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>Screen 2: PSU Student Registration</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">Screen2.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('Screen2'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (2.jpg)</span><span style="font-size:10px;">Registration Form</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/2.jpg" onclick="openLightbox('assets/screenshots/2.jpg', 'Screen2 · Registration (Actual Device Screenshot)')" alt="Screen2 actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>Native Input Wraps</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-Screen2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3: Dashboard -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>Dashboard: Marketplace & Grid</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">Dashboard.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('Dashboard'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (3.jpg)</span><span style="font-size:10px;">Marketplace Feed</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/3.jpg" onclick="openLightbox('assets/screenshots/3.jpg', 'Dashboard · Marketplace Feed (Actual Device Screenshot)')" alt="Dashboard actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>2-Column Card Grid</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-Dashboard"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 4: Inbox -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>Inbox: Campus Messages</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">Inbox.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('Inbox'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (4.jpg)</span><span style="font-size:10px;">Direct Messages</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/4.jpg" onclick="openLightbox('assets/screenshots/4.jpg', 'Inbox · Direct Messages (Actual Device Screenshot)')" alt="Inbox actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>Thread ListView</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-Inbox"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 5: CampusMarkterPlace -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>Campus Marketplace: Post New Item</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">CampusMarkterPlace.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('CampusMarkterPlace'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (5.jpg)</span><span style="font-size:10px;">Sell Form</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/5.jpg" onclick="openLightbox('assets/screenshots/5.jpg', 'Sell · Post New Item (Actual Device Screenshot)')" alt="Sell actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>ImagePicker + Spinners</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-CampusMarkterPlace"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 6: StudentDashboard -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>Student Dashboard: Creator Hub</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">StudentDashboard.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('StudentDashboard'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (6.jpg)</span><span style="font-size:10px;">2×2 Stat Cards</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/6.jpg" onclick="openLightbox('assets/screenshots/6.jpg', 'My Dashboard · Stats Overview (Actual Device Screenshot)')" alt="StudentDashboard actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>Metric Arrangement Cards</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-StudentDashboard"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 7: UserProfile View -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>User Profile: Student Profile</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">UserProfile.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('UserProfile'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (7.jpg)</span><span style="font-size:10px;">Public Bio & Reviews</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/7.jpg" onclick="openLightbox('assets/screenshots/7.jpg', 'Profile · View Profile (Actual Device Screenshot)')" alt="UserProfile actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>Avatar + Badges</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-UserProfile"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 8: UserProfile Edit -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>User Profile: Edit Mode</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">UserProfile.scm (profEdit)</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('UserProfile'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (8.jpg)</span><span style="font-size:10px;">Avatar Carousel & Form</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/8.jpg" onclick="openLightbox('assets/screenshots/8.jpg', 'Profile · Edit Profile (Actual Device Screenshot)')" alt="UserProfile Edit actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>Avatar Picker Row</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-UserProfileEdit"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 9: ListingDetail -->
+      <div class="sbs-screen-card">
+        <div class="sbs-card-header">
+          <div class="sbs-card-title">
+            <span>Listing Detail: Product Showcase</span>
+            <span style="font-size: 11px; background: var(--teal-bg); color: var(--teal-txt); padding: 2px 8px; border-radius: 99px;">ListingDetail.scm</span>
+          </div>
+          <button class="sg-card-btn" onclick="navigateToScreen('ListingDetail'); setViewMode('phone');">Open in Simulator →</button>
+        </div>
+        <div class="sbs-dual-columns">
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📸 Real Phone Screenshot (9.jpg)</span><span style="font-size:10px;">Artisan Keycap Item</span></div>
+            <div class="sbs-photo-frame"><img src="assets/screenshots/9.jpg" onclick="openLightbox('assets/screenshots/9.jpg', 'Listing Detail · Keycap (Actual Device Screenshot)')" alt="ListingDetail actual screenshot"></div>
+          </div>
+          <div class="sbs-col">
+            <div class="sbs-col-label"><span>📱 MIT App Inventor Architecture</span><span>Price & Action Buttons</span></div>
+            <div class="sbs-proto-frame" id="sbs-proto-ListingDetail"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- VIEWPORT 4: Actual Phone Screenshots Gallery (All 9 Real Photos) -->
+    <!-- ================================================================= -->
+    <div class="screenshots-gallery-viewport" id="viewport-photos">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--maroon);">Actual Running Device Screenshots</h2>
+        <p style="font-size: 13px; color: var(--ink-muted); margin-top: 4px;">
+          Captured live from the user's phone. Click any screenshot to open in high-resolution lightbox.
+        </p>
+      </div>
+
+      <div class="sg-grid">
+        <!-- 1.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/1.jpg', 'Screen1 · Sign In Screen (1.jpg)')">
+            <img src="assets/screenshots/1.jpg" alt="Screen1">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">Screen1: Student Sign In</div>
+              <div class="sg-card-sub">Logo, Brand, Sign In Tab, Demo Logins</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('Screen1'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 2.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/2.jpg', 'Screen2 · Registration Screen (2.jpg)')">
+            <img src="assets/screenshots/2.jpg" alt="Screen2">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">Screen2: PSU Registration</div>
+              <div class="sg-card-sub">Registration card, Role Spinner, PSU email verification</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('Screen2'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 3.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/3.jpg', 'Dashboard · Marketplace Feed (3.jpg)')">
+            <img src="assets/screenshots/3.jpg" alt="Dashboard">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">Dashboard: Marketplace</div>
+              <div class="sg-card-sub">Maroon header, Search, Category chips, 2-column cards</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('Dashboard'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 4.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/4.jpg', 'Inbox · Direct Messages (4.jpg)')">
+            <img src="assets/screenshots/4.jpg" alt="Inbox">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">Inbox: Messages</div>
+              <div class="sg-card-sub">Maroon header, Conversation threads, Quick action chips</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('Inbox'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 5.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/5.jpg', 'CampusMarkterPlace · Post New Item (5.jpg)')">
+            <img src="assets/screenshots/5.jpg" alt="Sell">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">CampusMarkterPlace: Post Item</div>
+              <div class="sg-card-sub">Add a photo CTA, Category & Type dropdowns, Meetup point</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('CampusMarkterPlace'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 6.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/6.jpg', 'StudentDashboard · My Dashboard (6.jpg)')">
+            <img src="assets/screenshots/6.jpg" alt="StudentDashboard">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">StudentDashboard: Stats Hub</div>
+              <div class="sg-card-sub">2x2 metric cards, Listings/Orders/Commissions tabs</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('StudentDashboard'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 7.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/7.jpg', 'UserProfile · View Profile (7.jpg)')">
+            <img src="assets/screenshots/7.jpg" alt="UserProfile">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">UserProfile: Profile View</div>
+              <div class="sg-card-sub">Circular Avatar, CLIENT badge, Star Rating, Bio card</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('UserProfile'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 8.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/8.jpg', 'UserProfile · Edit Profile (8.jpg)')">
+            <img src="assets/screenshots/8.jpg" alt="UserProfile Edit">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">UserProfile: Edit Profile</div>
+              <div class="sg-card-sub">Avatar horizontal list, Full Name, Bio, Save Profile</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('UserProfile'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+
+        <!-- 9.jpg -->
+        <div class="sg-card">
+          <div class="sg-img-wrap" onclick="openLightbox('assets/screenshots/9.jpg', 'ListingDetail · Item Details (9.jpg)')">
+            <img src="assets/screenshots/9.jpg" alt="ListingDetail">
+          </div>
+          <div class="sg-card-info">
+            <div>
+              <div class="sg-card-title">ListingDetail: Item Details</div>
+              <div class="sg-card-sub">Artisan keycap, ₱620 price, Meetup point, Seller card</div>
+            </div>
+            <button class="sg-card-btn" onclick="navigateToScreen('ListingDetail'); setViewMode('phone');">View in Prototype →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightbox Modal Container -->
+    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox()">
+      <div class="lightbox-content" onclick="event.stopPropagation()">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <img id="lightbox-img" src="" alt="Zoomed screenshot">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+      </div>
+    </div>
+
   </main>
 
   <!-- Global Toast Notification -->
@@ -2260,6 +2936,136 @@
         toast.style.display = 'none';
       }, 3500);
     }
+  
+    // --- SCREENSHOT PHOTO MAPPING ---
+    const SCREEN_PHOTOS = {
+      'Screen1': 'assets/screenshots/1.jpg',
+      'Screen2': 'assets/screenshots/2.jpg',
+      'Dashboard': 'assets/screenshots/3.jpg',
+      'Inbox': 'assets/screenshots/4.jpg',
+      'CampusMarkterPlace': 'assets/screenshots/5.jpg',
+      'StudentDashboard': 'assets/screenshots/6.jpg',
+      'UserProfile': 'assets/screenshots/7.jpg',
+      'UserProfileEdit': 'assets/screenshots/8.jpg',
+      'ListingDetail': 'assets/screenshots/9.jpg',
+      'CommissionRequest': 'assets/screenshots/5.jpg',
+      'Settings': 'assets/screenshots/7.jpg'
+    };
+
+    let currentFrameDisplayMode = 'ai2'; // 'ai2' or 'photo'
+
+    function setFrameDisplayMode(mode) {
+      currentFrameDisplayMode = mode;
+      const btnAi2 = document.getElementById('btn-toggle-ai2');
+      const btnPhoto = document.getElementById('btn-toggle-photo');
+      const photoLayer = document.getElementById('frame-actual-photo-layer');
+      const photoImg = document.getElementById('frame-photo-img');
+
+      if (mode === 'photo') {
+        btnPhoto.classList.add('active');
+        btnAi2.classList.remove('active');
+        const photoPath = SCREEN_PHOTOS[currentScreen] || 'assets/screenshots/1.jpg';
+        photoImg.src = photoPath;
+        photoLayer.style.display = 'block';
+        // Hide active scroll view temporarily
+        document.querySelectorAll('.screen-scroll-view').forEach(s => s.style.display = 'none');
+      } else {
+        btnAi2.classList.add('active');
+        btnPhoto.classList.remove('active');
+        photoLayer.style.display = 'none';
+        // Show current screen
+        const curEl = document.getElementById('screen-view-' + currentScreen);
+        if (curEl) curEl.style.display = 'block';
+      }
+    }
+
+    // Lightbox functions
+    function openLightbox(src, caption) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      img.src = src;
+      cap.textContent = caption || '';
+      modal.classList.add('active');
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.remove('active');
+    }
+
+    // Extended setViewMode
+    const origSetViewMode = window.setViewMode;
+    window.setViewMode = function(mode) {
+      const vpSingle = document.getElementById('viewport-single');
+      const vpGallery = document.getElementById('viewport-gallery');
+      const vpSbs = document.getElementById('viewport-side-by-side');
+      const vpPhotos = document.getElementById('viewport-photos');
+
+      // Remove active from all view buttons
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+
+      if (mode === 'side-by-side') {
+        if (vpSingle) vpSingle.style.display = 'none';
+        if (vpGallery) vpGallery.style.display = 'none';
+        if (vpPhotos) vpPhotos.style.display = 'none';
+        if (vpSbs) vpSbs.style.display = 'flex';
+        document.getElementById('btn-view-sbs')?.classList.add('active');
+        syncSideBySideViews();
+      } else if (mode === 'photos') {
+        if (vpSingle) vpSingle.style.display = 'none';
+        if (vpGallery) vpGallery.style.display = 'none';
+        if (vpSbs) vpSbs.style.display = 'none';
+        if (vpPhotos) vpPhotos.style.display = 'block';
+        document.getElementById('btn-view-photos')?.classList.add('active');
+      } else {
+        if (vpSbs) vpSbs.style.display = 'none';
+        if (vpPhotos) vpPhotos.style.display = 'none';
+        if (mode === 'gallery') {
+          if (vpSingle) vpSingle.style.display = 'none';
+          if (vpGallery) vpGallery.style.display = 'grid';
+          document.getElementById('btn-view-gallery')?.classList.add('active');
+        } else {
+          if (vpGallery) vpGallery.style.display = 'none';
+          if (vpSingle) vpSingle.style.display = 'flex';
+          const sim = document.getElementById('simulator-frame');
+          if (sim) {
+            sim.className = 'simulator-frame mode-' + mode;
+          }
+          document.getElementById('btn-view-' + mode)?.classList.add('active');
+          if (currentFrameDisplayMode === 'photo') {
+            setFrameDisplayMode('photo');
+          } else {
+            setFrameDisplayMode('ai2');
+          }
+        }
+      }
+    };
+
+    function syncSideBySideViews() {
+      // Clone screen content into side-by-side frames if empty
+      ['Screen1', 'Screen2', 'Dashboard', 'Inbox', 'CampusMarkterPlace', 'StudentDashboard', 'UserProfile', 'ListingDetail'].forEach(s => {
+        const target = document.getElementById('sbs-proto-' + s);
+        const source = document.getElementById('screen-view-' + s);
+        if (target && source && target.children.length === 0) {
+          const clone = source.cloneNode(true);
+          clone.style.display = 'block';
+          target.appendChild(clone);
+        }
+      });
+    }
+
+    // Sync photo update on navigation
+    const origNav = window.navigateToScreen;
+    window.navigateToScreen = function(screenName) {
+      if (origNav) origNav(screenName);
+      if (currentFrameDisplayMode === 'photo') {
+        const photoPath = SCREEN_PHOTOS[screenName] || 'assets/screenshots/1.jpg';
+        const photoImg = document.getElementById('frame-photo-img');
+        if (photoImg) photoImg.src = photoPath;
+      }
+    };
+
   </script>
 </body>
 </html>
