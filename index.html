@@ -2964,7 +2964,7 @@
       if (mode === 'photo') {
         btnPhoto.classList.add('active');
         btnAi2.classList.remove('active');
-        const photoPath = SCREEN_PHOTOS[currentScreen] || 'assets/screenshots/1.jpg';
+        const photoPath = SCREEN_PHOTOS[(typeof currentActiveScreen !== 'undefined' ? currentActiveScreen : 'Screen1')] || 'assets/screenshots/1.jpg';
         photoImg.src = photoPath;
         photoLayer.style.display = 'block';
         // Hide active scroll view temporarily
@@ -2974,7 +2974,7 @@
         btnPhoto.classList.remove('active');
         photoLayer.style.display = 'none';
         // Show current screen
-        const curEl = document.getElementById('screen-view-' + currentScreen);
+        const curEl = document.getElementById('screen-view-' + (typeof currentActiveScreen !== 'undefined' ? currentActiveScreen : 'Screen1'));
         if (curEl) curEl.style.display = 'block';
       }
     }
